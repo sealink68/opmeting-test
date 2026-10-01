@@ -1,0 +1,1665 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Opmeting Mesure v4.2</title>
+<link rel="manifest" href="manifest.webmanifest"><link rel="apple-touch-icon" href="icon-180.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --ios-bg: #F2F2F7;
+            --ios-card: #FFFFFF;
+            --ios-text: #000000;
+            --ios-gray: #8E8E93;
+            --ios-blue: #007AFF;
+            --ios-border: #C6C6C8;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--ios-bg);
+            color: var(--ios-text);
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: env(safe-area-inset-bottom);
+        }
+
+        .ios-group {
+            background-color: var(--ios-card);
+            border-radius: 10px;
+            margin: 16px;
+            overflow: hidden;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+
+        .ios-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--ios-border);
+            min-height: 44px;
+        }
+
+        .ios-row:last-child {
+            border-bottom: none;
+        }
+        
+        .ios-row.col-layout {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .ios-label {
+            font-weight: 500;
+            font-size: 16px;
+            color: var(--ios-text);
+            flex-shrink: 0;
+            width: 40%;
+        }
+        
+        .ios-row.col-layout .ios-label {
+            width: 100%;
+            margin-bottom: 4px;
+            font-size: 14px;
+            color: var(--ios-gray);
+        }
+
+        .ios-input {
+            flex-grow: 1;
+            text-align: right;
+            font-size: 16px;
+            border: none;
+            outline: none;
+            background: transparent;
+            color: var(--ios-gray);
+            width: 100%;
+        }
+
+        .ios-input:focus {
+            color: var(--ios-text);
+        }
+
+        .ios-row.col-layout .ios-input {
+            text-align: left;
+            color: var(--ios-text);
+        }
+
+        .ios-select {
+            appearance: none;
+            -webkit-appearance: none;
+            background: transparent;
+            border: none;
+            font-size: 16px;
+            color: var(--ios-blue);
+            text-align: right;
+            outline: none;
+            width: 100%;
+            direction: rtl;
+        }
+        
+        .ios-select option {
+            direction: ltr;
+        }
+
+        .ios-header {
+            font-size: 13px;
+            text-transform: uppercase;
+            color: var(--ios-gray);
+            margin: 24px 16px 8px 32px;
+            font-weight: 600;
+        }
+
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px;
+            border-bottom: 1px solid var(--ios-border);
+            padding-top: max(16px, env(safe-area-inset-top));
+        }
+
+        .navbar-title {
+            font-weight: 600;
+            font-size: 17px;
+        }
+
+        .navbar-btn {
+            color: var(--ios-blue);
+            font-size: 17px;
+            background: none;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+        }
+
+        @media print {
+            body {
+                background-color: white;
+                color: black;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .ios-group {
+                margin: 0 0 20px 0;
+                border: 1px solid #000;
+                border-radius: 0;
+                break-inside: avoid;
+            }
+            .ios-row {
+                border-bottom: 1px solid #eee;
+                padding: 4px 8px;
+                min-height: auto;
+            }
+            .ios-row.col-layout {
+                flex-direction: row;
+                align-items: center;
+            }
+            .ios-row.col-layout .ios-label {
+                width: 40%;
+                margin: 0;
+                font-size: 12px;
+                color: black;
+            }
+            .ios-label, .ios-input, .ios-select, .ios-header {
+                color: black !important;
+                font-size: 12px !important;
+            }
+            .ios-header {
+                margin: 10px 0 2px 0;
+                font-weight: bold;
+            }
+            .ios-input, .ios-select {
+                text-align: left;
+                direction: ltr;
+            }
+            input::placeholder {
+                color: transparent;
+            }
+            .print-only { display: block; }
+        }
+        @media screen {
+            .print-only { display: none; }
+        }
+    .field-error{box-shadow:inset 0 0 0 2px #dc2626!important}.required-active{box-shadow:inset 0 0 0 2px #f59e0b}.validation-box{display:none;margin:12px 16px;padding:12px;background:#fef2f2;color:#991b1b;border:1px solid #fca5a5;border-radius:10px}.validation-box.show{display:block}.ral-results{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:6px;width:100%;max-height:260px;overflow:auto;margin-top:8px}.ral-result{display:flex;align-items:center;gap:8px;padding:7px;border:1px solid #ddd;border-radius:8px;background:#fff;text-align:left}.ral-result-swatch{width:28px;height:28px;border-radius:6px;border:1px solid #999;flex:none}.ral-result strong{display:block;font-size:12px}.ral-result small{display:block;color:#666;font-size:10px}.dossier-dialog{width:min(720px,calc(100% - 24px));border:0;border-radius:14px;padding:0}.dossier-dialog::backdrop{background:#0006}.dossier-head,.dossier-tools{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:14px;border-bottom:1px solid #ddd}.dossier-tools input{flex:1;padding:9px;border:1px solid #ccc;border-radius:8px}#dossier-list{padding:12px;max-height:55vh;overflow:auto}.dossier-item{display:grid;grid-template-columns:1fr auto;gap:8px;padding:10px;border-bottom:1px solid #ddd}.dossier-item.active{background:#eef6ff}.dossier-actions{display:flex;gap:5px}.dossier-actions button,#dos-new{padding:6px 8px;border-radius:7px;background:#f2f2f7;color:#007aff}.print-footer{display:none}@media print{@page{size:A4;margin:12mm}.print-footer{display:block;position:fixed;bottom:-8mm;left:0;right:0;text-align:center;font-size:8pt;border-top:1px solid #aaa}.ios-group{break-inside:avoid-page}#door-visual{max-height:95mm}}
+.antipaniek-length{font-size:13px;font-weight:700;color:#b91c1c;white-space:nowrap;padding:5px 8px;background:#fef2f2;border:1px solid #fecaca;border-radius:8px}</style>
+</head>
+<body>
+
+    <div class="navbar no-print">
+        <button type="button" id="btn-clear-all" class="navbar-btn" data-i18n="nav_clear">Wis Alles</button><button type="button" id="btn-dossiers" class="navbar-btn">Dossiers</button><button type="button" id="btn-import-json" class="navbar-btn">Import</button><button type="button" id="btn-export-json" class="navbar-btn">Export</button><input type="file" id="json-file-input" accept="application/json,.json" hidden>
+        
+        <!-- Language Toggle -->
+        <div class="flex items-center gap-2 mx-2">
+            <span class="text-[10px] font-bold text-[#007AFF]" id="lang-lbl-nl">NL</span>
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" id="lang-toggle" class="sr-only peer" onchange="toggleLanguage()">
+              <div class="w-8 h-4 bg-gray-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-3 after:w-3 after:transition-all peer-checked:bg-[#007AFF]"></div>
+            </label>
+            <span class="text-[10px] font-bold text-gray-400" id="lang-lbl-fr">FR</span>
+        </div>
+
+        <button type="button" id="btn-ios" class="navbar-btn">iOS</button><button class="navbar-btn font-semibold" onclick="validatedPrint()" data-i18n="nav_print">Print PDF</button>
+    </div>
+
+    <div class="print-only text-center py-4 border-b-2 border-black mb-4">
+        <h1 class="text-2xl font-bold uppercase tracking-wider" data-i18n="print_title">Dormakaba Opmetingsblad</h1>
+        <p class="text-sm"><span data-i18n="print_subtitle">Vervanging / Nieuwe Installatie</span> <span id="print-deurlocatie" class="font-bold ml-2"></span></p><div id="print-meta"></div>
+    </div>
+
+    <dialog id="dossier-dialog" class="dossier-dialog no-print"><div class="dossier-head"><strong id="dos-title">Mijn dossiers</strong><button type="button" id="dos-close">×</button></div><div class="dossier-tools"><input id="dos-search" type="search" placeholder="Zoek dossier of werf"><button type="button" id="dos-new">Nieuw dossier</button></div><div id="dossier-list"></div></dialog><div id="validation-box" class="validation-box no-print"></div><form id="opmeting-form" class="pb-8">
+        
+        <div class="ios-header" data-i18n="hdr_dossier">Dossier & Klant</div>
+        <div id="klant-group" class="ios-group">
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_werf">Werf / Chantier</div>
+                <input id="werf" required type="text" class="ios-input" data-i18n-placeholder="ph_werf" placeholder="Naam werf">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_datum">Datum opm.</div>
+                <input id="datum-opmeting" required type="date" class="ios-input">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_dossier">Dossiernr.</div>
+                <input id="dossiernummer" required type="text" class="ios-input" data-i18n-placeholder="ph_dossier" placeholder="bv. 12345">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_contact">Contactpersoon</div>
+                <input id="contactpersoon" required type="text" class="ios-input" data-i18n-placeholder="ph_naam" placeholder="Naam">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_telefoon">Telefoon</div>
+                <input id="telefoon" type="tel" class="ios-input" placeholder="04xx xx xx xx">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_locatie">Locatie</div>
+                <input id="locatie" required type="text" class="ios-input" data-i18n-placeholder="ph_locatie" placeholder="Straat + Gem.">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_deurlocatie">Deurlocatie (Gebouw)</div>
+                <input type="text" id="deurlocatie" required class="ios-input" data-i18n-placeholder="ph_deurlocatie" placeholder="bv. Hoofdingang, Gang 2">
+            </div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-right: 16px; margin-top: 24px; margin-bottom: 8px;" class="no-print">
+            <div class="ios-header" style="margin: 0 0 0 32px;" data-i18n="hdr_schets">Schets / Technische Visualisation (Live)</div>
+            <button type="button" onclick="resetSchetsEnOpties(false)" class="text-xs font-semibold text-red-500 bg-white px-3 py-1.5 rounded-full shadow-sm border border-gray-200 active:bg-gray-50 transition-colors" data-i18n="btn_reset">
+                ↺ Reset Velden
+            </button>
+        </div>
+        
+        <div class="ios-group bg-white p-4 flex justify-center mt-0">
+            <!-- SVG code remains unchanged as it utilizes numerical outputs primarily -->
+            <svg id="door-visual" viewBox="-40 0 680 500" class="w-full h-auto max-w-xl mx-auto block">
+                <defs>
+                    <marker id="arrow" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                        <path d="M 0 0 L 10 5 L 0 10 z" fill="#007AFF" />
+                    </marker>
+                    <marker id="arrow-blue-thick" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                        <path d="M 0 2 L 10 5 L 0 8 z" fill="#007AFF" />
+                    </marker>
+                    <marker id="arrow-green" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+                        <path d="M 0 1 L 10 5 L 0 9 z" fill="#10b981" />
+                    </marker>
+                </defs>
+
+                <!-- LH Dimension -->
+                <line x1="-15" y1="90" x2="-15" y2="450" stroke="#007AFF" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+                <rect x="-30" y="220" width="30" height="100" fill="white" opacity="0.9" />
+                <text id="svg-val-lh" x="-15" y="270" text-anchor="middle" font-size="13" font-weight="bold" fill="#007AFF" transform="rotate(-90, -15, 270)">LH: -- mm</text>
+
+                <!-- TH Dimension -->
+                <line x1="615" y1="50" x2="615" y2="450" stroke="#007AFF" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+                <rect x="600" y="200" width="30" height="100" fill="white" opacity="0.9" />
+                <text id="svg-val-th" x="615" y="250" text-anchor="middle" font-size="14" font-weight="bold" fill="#007AFF" transform="rotate(-90, 615, 250)">TH: -- mm</text>
+
+                <!-- TB Dimension -->
+                <line x1="50" y1="25" x2="550" y2="25" stroke="#007AFF" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)" />
+                <rect x="230" y="15" width="140" height="20" fill="white" />
+                <text id="svg-val-tb" x="300" y="30" text-anchor="middle" font-size="13" font-weight="bold" fill="#007AFF">TB: -- mm</text>
+
+                <!-- Walls & Frame Outline -->
+                <rect x="10" y="50" width="40" height="400" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="550" y="50" width="40" height="400" fill="#e2e8f0" stroke="#94a3b8" stroke-width="2"/>
+                <rect x="50" y="50" width="500" height="400" fill="none" stroke="#333" stroke-width="3" />
+                
+                <!-- Operator Header (Kap) -->
+                <rect id="svg-kap-rect" x="50" y="50" width="500" height="40" fill="#f3f4f6" stroke="#333" stroke-width="2" />
+                <text id="svg-val-kap" x="300" y="70" text-anchor="middle" font-size="13" font-weight="bold" fill="#333">Kap H: -- / D: --</text>
+                <text id="svg-val-ral" x="300" y="84" text-anchor="middle" font-size="11" font-weight="bold" fill="#333" opacity="0.8"></text>
+                
+                <!-- Swing Operators L & R -->
+                <g id="svg-swing-op-l" opacity="0">
+                    <rect id="ed-box-l" x="0" y="42" width="0" height="20" fill="#1e293b" rx="3" stroke="#fff" stroke-width="1"/>
+                    <text id="ed-txt-l" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ED 100/250 (L)</text>
+                    <g id="arm-glij-l" opacity="0">
+                        <rect id="arm-glij-rail-l" x="0" y="90" width="0" height="8" fill="#f8fafc" stroke="#334155" stroke-width="2" rx="3"/>
+                        <line id="arm-glij-line-l" y1="60" y2="94" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+                        <circle id="arm-glij-dot-l" cy="94" r="5" fill="#0f172a"/>
+                    </g>
+                    <g id="arm-schaar-l" opacity="0">
+                        <polyline id="arm-schaar-line-l" fill="none" stroke="#0284c7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle id="arm-schaar-dot-l" cy="100" r="5" fill="#0f172a"/>
+                    </g>
+                </g>
+
+                <g id="svg-swing-op-r" opacity="0">
+                    <rect id="ed-box-r" x="0" y="42" width="0" height="20" fill="#1e293b" rx="3" stroke="#fff" stroke-width="1"/>
+                    <text id="ed-txt-r" y="55" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ED 100/250 (R)</text>
+                    <g id="arm-glij-r" opacity="0">
+                        <rect id="arm-glij-rail-r" x="0" y="90" width="0" height="8" fill="#f8fafc" stroke="#334155" stroke-width="2" rx="3"/>
+                        <line id="arm-glij-line-r" y1="60" y2="94" stroke="#0284c7" stroke-width="6" stroke-linecap="round"/>
+                        <circle id="arm-glij-dot-r" cy="94" r="5" fill="#0f172a"/>
+                    </g>
+                    <g id="arm-schaar-r" opacity="0">
+                        <polyline id="arm-schaar-line-r" fill="none" stroke="#0284c7" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+                        <circle id="arm-schaar-dot-r" cy="100" r="5" fill="#0f172a"/>
+                    </g>
+                </g>
+
+                <g id="lock-em-kap" opacity="0">
+                    <rect x="420" y="54" width="25" height="10" fill="#ef4444" rx="2" />
+                    <circle cx="432" cy="59" r="2" fill="white" />
+                </g>
+
+                <line x1="30" y1="450" x2="570" y2="450" stroke="#333" stroke-width="4" /><g id="new-guides"><g id="guide-small-u" opacity="0"><path d="M28 420v21h14v-21" fill="none" stroke="#f59e0b" stroke-width="5"/></g><g id="guide-small-l" opacity="0"><path d="M28 420v21h14" fill="none" stroke="#10b981" stroke-width="5"/></g><g id="guide-full" opacity="0"><rect id="guide-full-rect" x="50" y="438" width="500" height="9" rx="3" fill="#6366f1"/><text id="guide-full-text" x="300" y="435" text-anchor="middle" font-size="9"></text></g><g id="guide-ap-l" opacity="0"><rect id="guide-ap-l-rect" y="438" height="9" fill="#ef4444"/></g><g id="guide-ap-r" opacity="0"><rect id="guide-ap-r-rect" y="438" height="9" fill="#ef4444"/></g></g>
+
+                <!-- Panelen (VP & SP) -->
+                <g id="svg-group-vpl">
+                    <rect id="rect-vpl" x="0" y="90" width="0" height="358" fill="#e0f2fe" opacity="0.6" stroke="#333" stroke-width="1.5"/>
+                    <text id="text-vpl" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">VP L</text>
+                    <text id="svg-val-vpl-dim" y="255" text-anchor="middle" font-size="10" fill="#0284c7">-- x --</text>
+                </g>
+                
+                <g id="svg-group-spl">
+                    <rect id="rect-spl-2" x="0" y="105" width="0" height="340" fill="#bae6fd" opacity="0.6" stroke="#0369a1" stroke-width="1.5" style="display:none;"/>
+                    <rect id="rect-spl" x="0" y="95" width="0" height="350" fill="#bae6fd" opacity="0.9" stroke="#0284c7" stroke-width="2"/>
+                    <g id="hinge-group-left" opacity="0"><rect x="0" y="150" width="8" height="30" fill="#333" rx="2"/><rect x="0" y="350" width="8" height="30" fill="#333" rx="2"/></g>
+                    <g id="hinge-group-right" opacity="0"><rect x="0" y="150" width="8" height="30" fill="#333" rx="2"/><rect x="0" y="350" width="8" height="30" fill="#333" rx="2"/></g>
+                    <text id="text-spl" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">SP L</text>
+                    <text id="svg-val-spl-dim" y="255" text-anchor="middle" font-size="10" fill="#0369a1">-- x --</text>
+                    <line id="arrow-dir-spl" stroke="#10b981" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow-green)" opacity="0"/>
+                    <g id="rail-u-l" opacity="0"><rect x="50" y="430" width="100" height="12" fill="#f59e0b" rx="2"/><text x="100" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">U-Rail</text></g>
+                    <g id="rail-l-l" opacity="0"><rect x="50" y="430" width="100" height="12" fill="#10b981" rx="2"/><text x="100" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">L-Rail</text></g>
+                    <g id="rail-omega-l" opacity="0"><rect x="50" y="430" width="100" height="12" fill="#6366f1" rx="2"/><text x="100" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Omega-rail</text></g>
+                    <g class="lock-vloer" id="lock-vloer-group-l" opacity="0"><rect id="lock-vl" x="180" y="420" width="30" height="15" fill="#ef4444" rx="2"/><circle id="lock-vlc" cx="195" cy="427" r="3" fill="white"/></g>
+                    <text id="txt-lock-offset-l" x="180" y="415" font-size="9" font-weight="bold" fill="#ef4444" opacity="0" text-anchor="middle">Offset: --</text>
+                    <circle id="handle-l" cy="270" r="6" fill="#0284c7" opacity="0"/>
+                </g>
+                
+                <g id="svg-group-spr">
+                    <rect id="rect-spr-2" x="0" y="105" width="0" height="340" fill="#bae6fd" opacity="0.6" stroke="#0369a1" stroke-width="1.5" style="display:none;"/>
+                    <rect id="rect-spr" x="0" y="95" width="0" height="350" fill="#bae6fd" opacity="0.9" stroke="#0284c7" stroke-width="2"/>
+                    <g id="hinge-group-left-r" opacity="0"><rect x="0" y="150" width="8" height="30" fill="#333" rx="2"/><rect x="0" y="350" width="8" height="30" fill="#333" rx="2"/></g>
+                    <g id="hinge-group-right-r" opacity="0"><rect x="0" y="150" width="8" height="30" fill="#333" rx="2"/><rect x="0" y="350" width="8" height="30" fill="#333" rx="2"/></g>
+                    <text id="text-spr" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#0369a1">SP R</text>
+                    <text id="svg-val-spr-dim" y="255" text-anchor="middle" font-size="10" fill="#0369a1">-- x --</text>
+                    <line id="arrow-dir-spr" stroke="#10b981" stroke-width="6" stroke-linecap="round" marker-end="url(#arrow-green)" opacity="0"/>
+                    <g id="rail-u-r" opacity="0"><rect x="450" y="430" width="100" height="12" fill="#f59e0b" rx="2"/><text x="500" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">U-Rail</text></g>
+                    <g id="rail-l-r" opacity="0"><rect x="450" y="430" width="100" height="12" fill="#10b981" rx="2"/><text x="500" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">L-Rail</text></g>
+                    <g id="rail-omega-r" opacity="0"><rect x="450" y="430" width="100" height="12" fill="#6366f1" rx="2"/><text x="500" y="439" text-anchor="middle" font-size="9" fill="white" font-weight="bold">Omega-rail</text></g>
+                    <g class="lock-vloer" id="lock-vloer-group-r" opacity="0"><rect id="lock-vr" x="390" y="420" width="30" height="15" fill="#ef4444" rx="2"/><circle id="lock-vrc" cx="405" cy="427" r="3" fill="white"/></g>
+                    <text id="txt-lock-offset-r" x="405" y="415" font-size="9" font-weight="bold" fill="#ef4444" opacity="0" text-anchor="middle">Offset: --</text>
+                    <circle id="handle-r" cy="270" r="6" fill="#0284c7" opacity="0"/>
+                </g>
+
+                <g id="svg-group-vpr">
+                    <rect id="rect-vpr" x="0" y="90" width="0" height="358" fill="#e0f2fe" opacity="0.6" stroke="#333" stroke-width="1.5"/>
+                    <text id="text-vpr" y="235" text-anchor="middle" font-size="12" font-weight="bold" fill="#334155">VP R</text>
+                    <text id="svg-val-vpr-dim" y="255" text-anchor="middle" font-size="10" fill="#0284c7">-- x --</text>
+                </g>
+
+                <g id="lock-tv" opacity="0">
+                    <rect id="rect-tv-lock" x="0" y="0" width="30" height="12" fill="#8b5cf6" rx="2" />
+                    <text id="text-tv-lock" x="15" y="9" text-anchor="middle" font-size="8" font-weight="bold" fill="white">TV</text>
+                </g>
+
+                <!-- LB Dimension -->
+                <line id="line-lb" x1="230" y1="465" x2="370" y2="465" stroke="#007AFF" stroke-width="1.5" marker-start="url(#arrow)" marker-end="url(#arrow)"/>
+                <rect id="rect-lb" x="250" y="455" width="100" height="20" fill="white" opacity="0.9"/>
+                <text id="svg-val-lb" x="300" y="470" text-anchor="middle" font-size="13" font-weight="bold" fill="#007AFF">LB: -- mm</text>
+
+                <!-- INFO DIALOGS / CALLOUTS -->
+                <g id="callout-swing" opacity="0">
+                    <path id="callout-swing-line" d="M 300 45 L 350 25" stroke="#007AFF" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <rect x="350" y="10" width="190" height="25" fill="white" stroke="#007AFF" stroke-width="1" rx="4" opacity="0.95"/>
+                    <text id="txt-swing-asm" x="355" y="26" font-size="9" font-weight="bold" fill="#007AFF">Asm: -- | Muur: --</text>
+                </g>
+                <g id="callout-spl" opacity="0">
+                    <path id="callout-spl-line" d="M 75 180 L 150 200" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <rect x="10" y="115" width="130" height="60" fill="white" stroke="#0369a1" stroke-width="1" rx="4" opacity="0.95"/>
+                    <text id="txt-spl-title" x="15" y="130" font-size="9" font-weight="bold" fill="#0369a1">SP L Info:</text>
+                    <text id="txt-spl-glas" x="15" y="143" font-size="8" fill="#333">Glas: --</text>
+                    <text id="txt-spl-prof" x="15" y="155" font-size="8" fill="#333">Prof (B/O/Z): --/--/--</text>
+                    <text id="txt-spl-lat" x="15" y="167" font-size="8" fill="#333">Glaslat: --</text>
+                </g>
+                <g id="callout-spr" opacity="0">
+                    <path id="callout-spr-line" d="M 525 180 L 450 200" stroke="#0369a1" stroke-width="1.5" stroke-dasharray="3,3"/>
+                    <rect x="460" y="115" width="130" height="60" fill="white" stroke="#0369a1" stroke-width="1" rx="4" opacity="0.95"/>
+                    <text id="txt-spr-title" x="465" y="130" font-size="9" font-weight="bold" fill="#0369a1">SP R Info:</text>
+                    <text id="txt-spr-glas" x="465" y="143" font-size="8" fill="#333">Glas: --</text>
+                    <text id="txt-spr-prof" x="465" y="155" font-size="8" fill="#333">Prof (B/O/Z): --/--/--</text>
+                    <text id="txt-spr-lat" x="465" y="167" font-size="8" fill="#333">Glaslat: --</text>
+                </g>
+            </svg>
+        </div>
+
+        <div class="ios-header" data-i18n="hdr_vervangen">Wat wordt vervangen?</div>
+        <div class="ios-group p-2">
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_aandrijving">Aandrijfsysteem</div>
+                <input type="checkbox" id="replace-aandrijving" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100 pl-8 bg-gray-50/50">
+                <div class="ios-label !w-auto text-sm text-gray-500" data-i18n="opt_zonder_kap">└ Zonder Kap</div>
+                <input type="checkbox" id="replace-zonder-kap" class="accent-[#007AFF] w-4 h-4">
+            </label>
+            
+            <div class="ios-row col-layout border-b border-gray-100 py-2">
+                <div class="ios-label !w-full text-sm text-gray-500 mb-1" data-i18n="lbl_oud_systeem">Oud Systeem (Bestaand)</div>
+                <input type="text" class="ios-input !text-left w-full bg-gray-50 rounded p-2 text-sm" data-i18n-placeholder="ph_oud_systeem" placeholder="bv. Oude Besam / Dorma ...">
+            </div>
+
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_vleugel_l">Linker vleugel</div>
+                <input type="checkbox" id="replace-vleugel-l" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_vleugel_r">Rechter vleugel</div>
+                <input type="checkbox" id="replace-vleugel-r" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_beide_vleugels">Beide vleugels</div>
+                <input type="checkbox" id="replace-beide-vleugels" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_vast_l">Vast paneel links</div>
+                <input type="checkbox" id="replace-vast-l" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b border-gray-100">
+                <div class="ios-label !w-auto" data-i18n="opt_vast_r">Vast paneel rechts</div>
+                <input type="checkbox" id="replace-vast-r" class="accent-[#007AFF] w-5 h-5">
+            </label>
+            <label class="ios-row cursor-pointer hover:bg-gray-50 border-b-0">
+                <div class="ios-label !w-auto" data-i18n="opt_beide_vast">Beide vaste panelen</div>
+                <input type="checkbox" id="replace-beide-vast" class="accent-[#007AFF] w-5 h-5">
+            </label>
+        </div>
+
+        <div class="ios-header" data-i18n="hdr_config">Systeem Configuratie</div>
+        <div class="ios-group">
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_deurtype">Deurtype</div>
+                <select id="deurtype" class="ios-select">
+                    <!-- Data value remains Dutch for logic, UI text translates via JS option mapping -->
+                    <option value="Schuifdeur">Schuifdeur</option>
+                    <option value="Draaideur">Draaideur</option>
+                </select>
+            </div>
+            
+            <div id="draaideur-extra-group" class="hidden">
+                <div class="ios-row bg-gray-50">
+                    <div class="font-semibold text-sm text-gray-500 uppercase tracking-wide" data-i18n="lbl_draaideur_uitrusting">Draaideur Uitrusting & Arm</div>
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_armsoort">Armsoort</div>
+                    <select id="draaideur-arm" class="ios-select font-semibold">
+                        <option value="Glijarm">Glijarm (Push / Pull)</option>
+                        <option value="Schaararm">Schaararm (Push / Pull)</option>
+                    </select>
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_asmaat">Asmaat / Diepte</div>
+                    <input type="number" id="dim-draai-asm" class="ios-input" placeholder="mm">
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" style="font-size: 15px;" data-i18n="lbl_muur_deur_diepte">Diepte tussen muur en deurvlak</div>
+                    <input type="number" id="dim-muur-deur-diepte" class="ios-input" placeholder="mm (+ of -)">
+                </div>
+            </div>
+
+            <div class="ios-row" id="row-profielsysteem">
+                <div class="ios-label" data-i18n="lbl_profiel">Profielsysteem</div>
+                <select id="profielsysteem" class="ios-select">
+                    <option value="" disabled selected data-i18n="opt_kies_profiel">Kies profiel/type...</option>
+                    <option>ST (Standaard)</option>
+                    <option>FLEX</option>
+                    <option>FLEX Green</option>
+                    <option>TST (Telescopisch)</option>
+                    <option>Antipaniek</option>
+                    <option>FST</option>
+                    <option>Volledig Glas</option>
+                    <option data-i18n="opt_ander">Ander / Zonder</option>
+                </select>
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_aandrijving">Nieuwe Aandrijving</div>
+                <select id="aandrijving-select" class="ios-select font-semibold">
+                    <option value="" disabled selected data-i18n="opt_kies_model">Kies model...</option>
+                    <optgroup label="Schuifdeuren - ES PROLINE">
+                        <option>ES PROLINE 250/130</option>
+                        <option>ES PROLINE 250/180</option>
+                        <option>ES PROLINE 400</option>
+                        <option>ES PROLINE 500</option>
+                        <option>CS 80 MAGNEO</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div id="proline-security-row" class="ios-row hidden"><div class="ios-label" data-i18n="lbl_security">Security</div><div class="flex gap-4"><label>RC2 <input type="checkbox" id="security-rc2" class="accent-[#007AFF] w-5 h-5"></label><label>RC3 <input type="checkbox" id="security-rc3" class="accent-[#007AFF] w-5 h-5"></label></div></div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_openingswijze">Openingswijze</div>
+                <select id="openingswijze" class="ios-select">
+                    <option value="Dubbel (Centraal)">Dubbel (Centraal)</option>
+                    <option value="Linksopenend (OG)">Linksopenend (OG)</option>
+                    <option value="Rechtsopenend (OR)">Rechtsopenend (OR)</option>
+                </select>
+            </div>
+
+            <div class="ios-row" id="koordophanging-row">
+                <div class="ios-label" data-i18n="lbl_koord">Koordophanging systeem</div>
+                <select id="koordophanging" class="ios-select">
+                    <option data-i18n="opt_nee">Nee</option>
+                    <option data-i18n="opt_ja">Ja</option>
+                </select>
+            </div>
+
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_ral">RAL Kleur / Finish</div>
+                <div class="w-full flex flex-col items-end">
+                    <input type="text" id="ral-kleur" class="ios-input mb-2" data-i18n-placeholder="ph_ral" placeholder="bv. RAL 7016 of Anodisé">
+                    <div id="ral-status" class="text-xs text-gray-500 mt-1"></div><div class="flex flex-wrap gap-2 justify-end mt-1 w-full" id="ral-palette"></div><div id="ral-results" class="ral-results no-print"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ios-header" data-i18n="hdr_globale_afm">Globale Afmetingen (mm)</div>
+        <div class="ios-group">
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_tb">Totaal Breedte (TB)</div>
+                <input type="number" id="dim-tb" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_th">Totaal Hoogte (TH)</div>
+                <input type="number" id="dim-th" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_lb">Loopbreedte (LB)</div>
+                <input type="number" id="dim-lb" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_lh">Loophoogte (LH)</div>
+                <input type="number" id="dim-lh" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_kap_h">Kap Hoogte</div>
+                <input type="number" id="dim-kap-h" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_kap_d">Kap Diepte</div>
+                <input type="number" id="dim-kap-d" inputmode="decimal" class="ios-input" placeholder="mm">
+            </div>
+        </div>
+
+        <div id="lbl-panel-header" class="ios-header" data-i18n="hdr_panelen">Schuifpaneel & Vaste Panelen</div>
+        
+        <div class="ios-group">
+            <div class="ios-row bg-gray-50">
+                <div id="lbl-panel-title-sl" class="font-semibold text-sm text-gray-500 uppercase tracking-wide">Schuifpaneel Links (SP L)</div>
+            </div>
+            <div class="ios-row">
+                <div id="lbl-panel-b-l" class="ios-label">Breedte (SP L)</div>
+                <input type="number" id="dim-spl-b" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div id="lbl-panel-h-l" class="ios-label">Hoogte (SP L)</div>
+                <input type="number" id="dim-spl-h" class="ios-input" placeholder="mm">
+            </div>
+            <div id="sliding-panel-extra-group" class="w-full">
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_glaslat">Glaslatten Dikte</div>
+                    <input type="number" id="dim-glaslat-d" class="ios-input" placeholder="mm">
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_glasmaat">Glasmaat (tot glaslatten)</div>
+                    <input type="text" id="dim-glasmaat" class="ios-input" placeholder="B x H mm">
+                </div><div class="ios-row"><div class="ios-label" data-i18n="lbl_glastype">Glastype</div><select id="glas-type-l" class="ios-select"><option value="" data-i18n="opt_kies_glas">Kies glastype...</option><option data-i18n="glass_float">Float helder</option><option data-i18n="glass_tempered">Gehard veiligheidsglas</option><option data-i18n="glass_laminated">Gelaagd veiligheidsglas</option><option data-i18n="glass_double">Isolatieglas dubbel</option><option data-i18n="glass_triple">Isolatieglas triple</option><option data-i18n="glass_lowe">Low-E isolatieglas</option><option data-i18n="glass_acoustic">Akoestisch gelaagd glas</option><option data-i18n="glass_fire">Brandwerend glas</option><option data-i18n="glass_wired">Draadglas</option><option data-i18n="glass_frosted">Mat / gezuurd glas</option><option data-i18n="glass_tinted">Getint / zonwerend glas</option><option data-i18n="glass_other">Ander</option></select></div><div class="ios-row"><div class="ios-label" data-i18n="lbl_glascode">Bestaande glascode</div><input id="glas-code-l" class="ios-input" data-i18n-placeholder="ph_glascode" placeholder="bv. 44.2 / 10 / 6"></div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_prof_boven">Profieldikte Boven</div>
+                    <input type="number" id="dim-prof-boven" class="ios-input" placeholder="mm">
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_prof_onder">Profieldikte Onder</div>
+                    <input type="number" id="dim-prof-onder" class="ios-input" placeholder="mm">
+                </div>
+                <div class="ios-row">
+                    <div class="ios-label" data-i18n="lbl_prof_zij">Profieldikte Zijkanten</div>
+                    <input type="number" id="dim-prof-zijkant" class="ios-input" placeholder="mm">
+                </div>
+            </div>
+
+            <div id="spr-dimension-group">
+                <div class="ios-row bg-gray-50">
+                    <div id="lbl-panel-title-r" class="font-semibold text-sm text-gray-500 uppercase tracking-wide">Schuifpaneel Rechts (SP R)</div>
+                </div>
+                <div class="ios-row">
+                    <div id="lbl-panel-b-r" class="ios-label">Breedte (SP R)</div>
+                    <input type="number" id="dim-spr-b" class="ios-input" placeholder="mm">
+                </div>
+                <div class="ios-row">
+                    <div id="lbl-panel-h-r" class="ios-label">Hoogte (SP R)</div>
+                    <input type="number" id="dim-spr-h" class="ios-input" placeholder="mm">
+                </div>
+                <div id="sliding-panel-extra-r-group" class="w-full">
+                    <div class="ios-row">
+                        <div class="ios-label" data-i18n="lbl_glaslat_r">Glaslatten Dikte (R)</div>
+                        <input type="number" id="dim-glaslat-d-r" class="ios-input" placeholder="mm">
+                    </div>
+                    <div class="ios-row">
+                        <div class="ios-label" data-i18n="lbl_glasmaat_r">Glasmaat (R)</div>
+                        <input type="text" id="dim-glasmaat-r" class="ios-input" placeholder="B x H mm">
+                    </div><div class="ios-row"><div class="ios-label" data-i18n="lbl_glastype_r">Glastype (R)</div><select id="glas-type-r" class="ios-select"><option value="" data-i18n="opt_kies_glas">Kies glastype...</option><option data-i18n="glass_float">Float helder</option><option data-i18n="glass_tempered">Gehard veiligheidsglas</option><option data-i18n="glass_laminated">Gelaagd veiligheidsglas</option><option data-i18n="glass_double">Isolatieglas dubbel</option><option data-i18n="glass_triple">Isolatieglas triple</option><option data-i18n="glass_lowe">Low-E isolatieglas</option><option data-i18n="glass_acoustic">Akoestisch gelaagd glas</option><option data-i18n="glass_fire">Brandwerend glas</option><option data-i18n="glass_wired">Draadglas</option><option data-i18n="glass_frosted">Mat / gezuurd glas</option><option data-i18n="glass_tinted">Getint / zonwerend glas</option><option data-i18n="glass_other">Ander</option></select></div><div class="ios-row"><div class="ios-label" data-i18n="lbl_glascode_r">Bestaande glascode (R)</div><input id="glas-code-r" class="ios-input" data-i18n-placeholder="ph_glascode" placeholder="bv. 44.2 / 10 / 6"></div>
+                </div>
+            </div>
+
+            <div class="ios-row bg-gray-50">
+                <div class="font-semibold text-sm text-gray-500 uppercase tracking-wide" data-i18n="lbl_vp_l">Vast Paneel Links (VP L)</div>
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_b_vpl">Breedte (VP L)</div>
+                <input type="number" id="dim-vpl-b" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_h_vpl">Hoogte (VP L)</div>
+                <input type="number" id="dim-vpl-h" class="ios-input" placeholder="mm">
+            </div>
+
+            <div class="ios-row bg-gray-50">
+                <div class="font-semibold text-sm text-gray-500 uppercase tracking-wide" data-i18n="lbl_vp_r">Vast Paneel Rechts (VP R)</div>
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_b_vpr">Breedte (VP R)</div>
+                <input type="number" id="dim-vpr-b" class="ios-input" placeholder="mm">
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_h_vpr">Hoogte (VP R)</div>
+                <input type="number" id="dim-vpr-h" class="ios-input" placeholder="mm">
+            </div>
+        </div>
+
+        <div class="ios-header" data-i18n="hdr_opties">Onderdelen & Opties</div>
+        <div class="ios-group">
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_vloergeleider">Vloergeleider Type</div>
+                <div class="flex items-center justify-end gap-2 w-full">
+                    <span id="antipaniek-raillengte" class="antipaniek-length" hidden aria-live="polite"></span>
+                    <select id="vloergeleider" class="ios-select">
+                    <option value="Zonder" data-i18n="opt_zonder">Zonder</option>
+                    <option value="U-Model">U-Model</option>
+                    <option value="L-Model">L-Model</option>
+                    <option value="Omega-rail">Omega-rail</option><option value="U-profiel">U-profiel</option>
+                    <option value="Antipaniek">Antipaniek</option>
+                    </select>
+                </div>
+            </div>
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_slot">Slotmechanisme</div>
+                <select id="slotmechanisme" class="ios-select">
+                    <option value="geen" data-i18n="opt_geen_slot">Geen slot</option>
+                    <option value="em-fiac">Electromechanisch: FIAC</option>
+                    <option value="em-mono">Electromechanisch: Mono-stabiel</option>
+                    <option value="em-bi">Electromechanisch: Bi-stabiel</option>
+                    <option value="tv100-200">Electromechanisch: TV 100 / TV 200 (Pin/Kleefslot)</option>
+                    <option value="vloer-sluitkant" data-i18n="opt_vloer_sluit">Vloerslot: Aan Sluitkant</option>
+                    <option value="vloer-centraal" data-i18n="opt_vloer_centraal">Vloerslot: Centraal (Midden)</option>
+                    <option value="haak-profiel" data-i18n="opt_haakslot">Haakslot (Profiel)</option>
+                </select>
+            </div>
+            <div id="vloerslot-positie-group" class="ios-row col-layout hidden">
+                <div class="ios-label mb-1" data-i18n="lbl_pos_vloerslot">Positie & Uitvoering Vloerslot</div>
+                <div class="w-full flex flex-col gap-2">
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600" data-i18n="lbl_type_uitv">Type uitvoering:</span>
+                        <select id="vloerslot-type" class="ios-select !w-32 bg-gray-50 rounded p-1">
+                            <option data-i18n="opt_half">Half</option>
+                            <option data-i18n="opt_doorlopend">Doorlopend</option>
+                        </select>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-sm text-gray-600" data-i18n="lbl_offset">Offset vanaf sluitkant (mm):</span>
+                        <input type="number" id="dim-vloerslot-pos" class="ios-input !w-24 bg-gray-50 rounded p-1 text-right" placeholder="mm">
+                    </div>
+                    <label class="flex items-center gap-2 text-sm mt-1 cursor-pointer">
+                        <input type="checkbox" id="vloerboring-nodig" class="accent-[#007AFF] w-4 h-4"> <span data-i18n="lbl_boring">Vloerboring uit te voeren</span>
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="ios-header" data-i18n="hdr_tech">Technieker & Extra</div>
+        <div class="ios-group">
+            <div class="ios-row">
+                <div class="ios-label" data-i18n="lbl_tech_naam">Naam Technieker</div>
+                <input type="text" id="technieker" required class="ios-input" data-i18n-placeholder="ph_tech_naam" placeholder="Jouw naam">
+            </div>
+            <div class="ios-row col-layout">
+                <div class="ios-label" data-i18n="lbl_opm">Opmerkingen</div>
+                <textarea class="ios-input w-full mt-1 resize-none" rows="4" data-i18n-placeholder="ph_opm" placeholder="Eventuele opmerkingen of speciale vereisten..."></textarea>
+            </div>
+        </div>
+        
+        <div class="px-4 mt-8 mb-12 no-print">
+            <button type="button" onclick="validatedPrint()" class="w-full bg-[#007AFF] text-white font-semibold text-lg py-3 rounded-xl shadow-sm hover:bg-blue-600 transition-colors" data-i18n="btn_gen_pdf">
+                Genereer PDF / Print
+            </button>
+        </div>
+
+    </form>
+
+    <script>
+        // --- TRANSLATION DICTIONARY ---
+        const translations = {
+            nl: {
+                lbl_security:"Security",lbl_glastype:"Glastype",lbl_glastype_r:"Glastype (R)",lbl_glascode:"Bestaande glascode",lbl_glascode_r:"Bestaande glascode (R)",ph_glascode:"bv. 44.2 / 10 / 6",opt_kies_glas:"Kies glastype...",glass_float:"Float helder",glass_tempered:"Gehard veiligheidsglas",glass_laminated:"Gelaagd veiligheidsglas",glass_double:"Isolatieglas dubbel",glass_triple:"Isolatieglas triple",glass_lowe:"Low-E isolatieglas",glass_acoustic:"Akoestisch gelaagd glas",glass_fire:"Brandwerend glas",glass_wired:"Draadglas",glass_frosted:"Mat / gezuurd glas",glass_tinted:"Getint / zonwerend glas",glass_other:"Ander",nav_clear: "Wis Alles", nav_print: "Print PDF", print_title: "Dormakaba Opmetingsblad", print_subtitle: "Vervanging / Nieuwe Installatie",
+                hdr_dossier: "Dossier & Klant", lbl_werf: "Werf / Chantier", ph_werf: "Naam werf", lbl_datum: "Datum opm.", lbl_dossier: "Dossiernr.", ph_dossier: "bv. 12345",
+                lbl_contact: "Contactpersoon", ph_naam: "Naam", lbl_telefoon: "Telefoon", lbl_locatie: "Locatie", ph_locatie: "Straat + Gem.", lbl_deurlocatie: "Deurlocatie (Gebouw)", ph_deurlocatie: "bv. Hoofdingang, Gang 2",
+                hdr_schets: "Schets / Technische Visualisation (Live)", btn_reset: "↺ Reset Velden",
+                hdr_vervangen: "Wat wordt vervangen?", opt_aandrijving: "Aandrijfsysteem", opt_zonder_kap: "└ Zonder Kap", lbl_oud_systeem: "Oud Systeem (Bestaand)", ph_oud_systeem: "bv. Oude Besam / Dorma ...",
+                opt_vleugel_l: "Linker vleugel", opt_vleugel_r: "Rechter vleugel", opt_beide_vleugels: "Beide vleugels", opt_vast_l: "Vast paneel links", opt_vast_r: "Vast paneel rechts", opt_beide_vast: "Beide vaste panelen",
+                hdr_config: "Systeem Configuratie", lbl_deurtype: "Deurtype",
+                lbl_draaideur_uitrusting: "Draaideur Uitrusting & Arm", lbl_armsoort: "Armsoort", lbl_asmaat: "Asmaat / Diepte", lbl_muur_deur_diepte: "Diepte tussen muur en deurvlak",
+                lbl_profiel: "Profielsysteem", opt_kies_profiel: "Kies profiel/type...", opt_ander: "Ander / Zonder", lbl_aandrijving: "Nieuwe Aandrijving", opt_kies_model: "Kies model...",
+                lbl_openingswijze: "Openingswijze", lbl_koord: "Koordophanging systeem", opt_nee: "Nee", opt_ja: "Ja", lbl_ral: "RAL Kleur / Finish", ph_ral: "bv. RAL 7016 of Anodisé",
+                hdr_globale_afm: "Globale Afmetingen (mm)", lbl_tb: "Totaal Breedte (TB)", lbl_th: "Totaal Hoogte (TH)", lbl_lb: "Loopbreedte (LB)", lbl_lh: "Loophoogte (LH)", lbl_kap_h: "Kap Hoogte", lbl_kap_d: "Kap Diepte",
+                hdr_panelen: "Schuifpaneel & Vaste Panelen", lbl_glaslat: "Glaslatten Dikte", lbl_glasmaat: "Glasmaat (tot glaslatten)", lbl_prof_boven: "Profieldikte Boven", lbl_prof_onder: "Profieldikte Onder", lbl_prof_zij: "Profieldikte Zijkanten",
+                lbl_glaslat_r: "Glaslatten Dikte (R)", lbl_glasmaat_r: "Glasmaat (R)", lbl_vp_l: "Vast Paneel Links (VP L)", lbl_b_vpl: "Breedte (VP L)", lbl_h_vpl: "Hoogte (VP L)",
+                lbl_vp_r: "Vast Paneel Rechts (VP R)", lbl_b_vpr: "Breedte (VP R)", lbl_h_vpr: "Hoogte (VP R)",
+                hdr_opties: "Onderdelen & Opties", lbl_vloergeleider: "Vloergeleider Type", opt_zonder: "Zonder", lbl_slot: "Slotmechanisme", opt_geen_slot: "Geen slot", opt_vloer_sluit: "Vloerslot: Aan Sluitkant", opt_vloer_centraal: "Vloerslot: Centraal (Midden)", opt_haakslot: "Haakslot (Profiel)",
+                lbl_pos_vloerslot: "Positie & Uitvoering Vloerslot", lbl_type_uitv: "Type uitvoering:", opt_half: "Half", opt_doorlopend: "Doorlopend", lbl_offset: "Offset vanaf sluitkant (mm):", lbl_boring: "Vloerboring uit te voeren",
+                hdr_tech: "Technieker & Extra", lbl_tech_naam: "Naam Technieker", ph_tech_naam: "Jouw naam", lbl_opm: "Opmerkingen", ph_opm: "Eventuele opmerkingen of speciale vereisten...", btn_gen_pdf: "Genereer PDF / Print"
+            },
+            fr: {
+                lbl_security:"Sécurité",lbl_glastype:"Type de verre",lbl_glastype_r:"Type de verre (D)",lbl_glascode:"Code du vitrage existant",lbl_glascode_r:"Code du vitrage existant (D)",ph_glascode:"ex. 44.2 / 10 / 6",opt_kies_glas:"Choisir le type de verre...",glass_float:"Verre float clair",glass_tempered:"Verre de sécurité trempé",glass_laminated:"Verre de sécurité feuilleté",glass_double:"Double vitrage isolant",glass_triple:"Triple vitrage isolant",glass_lowe:"Vitrage isolant Low-E",glass_acoustic:"Verre feuilleté acoustique",glass_fire:"Verre résistant au feu",glass_wired:"Verre armé",glass_frosted:"Verre mat / dépoli",glass_tinted:"Verre teinté / contrôle solaire",glass_other:"Autre",nav_clear: "Tout Effacer", nav_print: "Imprimer PDF", print_title: "Fiche de Mesure Dormakaba", print_subtitle: "Remplacement / Nouvelle Installation",
+                hdr_dossier: "Dossier & Client", lbl_werf: "Chantier", ph_werf: "Nom du chantier", lbl_datum: "Date de mesur.", lbl_dossier: "N° Dossier", ph_dossier: "ex. 12345",
+                lbl_contact: "Personne de contact", ph_naam: "Nom", lbl_telefoon: "Téléphone", lbl_locatie: "Emplacement", ph_locatie: "Rue + Commune", lbl_deurlocatie: "Emplacement porte", ph_deurlocatie: "ex. Entrée principale",
+                hdr_schets: "Croquis / Visuel Technique (Live)", btn_reset: "↺ Réinitialiser",
+                hdr_vervangen: "Qu'est-ce qui est remplacé ?", opt_aandrijving: "Système d'entraînement", opt_zonder_kap: "└ Sans capot", lbl_oud_systeem: "Ancien système (Existant)", ph_oud_systeem: "ex. Ancien Besam / Dorma ...",
+                opt_vleugel_l: "Vantail gauche", opt_vleugel_r: "Vantail droit", opt_beide_vleugels: "Deux vantaux", opt_vast_l: "Panneau fixe gauche", opt_vast_r: "Panneau fixe droit", opt_beide_vast: "Deux panneaux fixes",
+                hdr_config: "Configuration du Système", lbl_deurtype: "Type de porte",
+                lbl_draaideur_uitrusting: "Équipement & Bras Porte Battante", lbl_armsoort: "Type de bras", lbl_asmaat: "Mesure d'axe / Profondeur", lbl_muur_deur_diepte: "Profondeur entre mur et porte",
+                lbl_profiel: "Système de profilés", opt_kies_profiel: "Choisir profil...", opt_ander: "Autre / Sans", lbl_aandrijving: "Nouvel Opérateur", opt_kies_model: "Choisir modèle...",
+                lbl_openingswijze: "Sens d'ouverture", lbl_koord: "Système de suspension à corde", opt_nee: "Non", opt_ja: "Oui", lbl_ral: "Couleur RAL / Finition", ph_ral: "ex. RAL 7016 ou Anodisé",
+                hdr_globale_afm: "Dimensions Globales (mm)", lbl_tb: "Largeur Totale (LT)", lbl_th: "Hauteur Totale (HT)", lbl_lb: "Largeur de passage (LP)", lbl_lh: "Hauteur de passage (HP)", lbl_kap_h: "Hauteur capot", lbl_kap_d: "Profondeur capot",
+                hdr_panelen: "Panneau Coulissant & Panneaux Fixes", lbl_glaslat: "Épaisseur parcloses", lbl_glasmaat: "Mesure de verre (jusqu'aux parcloses)", lbl_prof_boven: "Épaisseur profilé Haut", lbl_prof_onder: "Épaisseur profilé Bas", lbl_prof_zij: "Épaisseur profilé Latéraux",
+                lbl_glaslat_r: "Épaisseur parcloses (D)", lbl_glasmaat_r: "Mesure de verre (D)", lbl_vp_l: "Panneau Fixe Gauche (PF G)", lbl_b_vpl: "Largeur (PF G)", lbl_h_vpl: "Hauteur (PF G)",
+                lbl_vp_r: "Panneau Fixe Droit (PF D)", lbl_b_vpr: "Largeur (PF D)", lbl_h_vpr: "Hauteur (PF D)",
+                hdr_opties: "Composants & Options", lbl_vloergeleider: "Type guide au sol", opt_zonder: "Sans", lbl_slot: "Mécanisme de verrouillage", opt_geen_slot: "Pas de serrure", opt_vloer_sluit: "Verrou au sol: Côté Fermeture", opt_vloer_centraal: "Verrou au sol: Central (Milieu)", opt_haakslot: "Serrure à crochet (Profilé)",
+                lbl_pos_vloerslot: "Position & Exécution verrou au sol", lbl_type_uitv: "Type d'exécution:", opt_half: "Demi", opt_doorlopend: "Continu", lbl_offset: "Décalage côté fermeture (mm):", lbl_boring: "Forage au sol à effectuer",
+                hdr_tech: "Technicien & Extra", lbl_tech_naam: "Nom du technicien", ph_tech_naam: "Votre nom", lbl_opm: "Remarques", ph_opm: "Remarques éventuelles ou exigences spéciales...", btn_gen_pdf: "Générer PDF / Imprimer"
+            }
+        };
+
+        let currentLang = 'nl';
+
+        function toggleLanguage() {
+            const isFr = document.getElementById('lang-toggle').checked;
+            currentLang = isFr ? 'fr' : 'nl';
+            
+            // Update UI toggle colors
+            document.getElementById('lang-lbl-nl').classList.toggle('text-[#007AFF]', !isFr);
+            document.getElementById('lang-lbl-nl').classList.toggle('text-gray-400', isFr);
+            document.getElementById('lang-lbl-fr').classList.toggle('text-[#007AFF]', isFr);
+            document.getElementById('lang-lbl-fr').classList.toggle('text-gray-400', !isFr);
+
+            applyTranslations();
+            updateSelectOptions();
+            updateVisual(); // Refresh dynamic labels in SVG
+        }
+
+        function applyTranslations() {
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (translations[currentLang][key]) el.textContent = translations[currentLang][key];
+            });
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (translations[currentLang][key]) el.placeholder = translations[currentLang][key];
+            });
+        }
+
+        function updateSelectOptions() {
+            // Update Dynamic Option Texts for Door Type
+            const deurtype = document.getElementById('deurtype');
+            deurtype.options[0].text = currentLang === 'nl' ? "Schuifdeur" : "Porte coulissante";
+            deurtype.options[1].text = currentLang === 'nl' ? "Draaideur" : "Porte battante";
+
+            // Update Dynamic Option Texts for Opening Types
+            const openingSelect = document.getElementById('openingswijze');
+            if (deurtype.value === 'Draaideur') {
+                openingSelect.innerHTML = `
+                    <option value="Dubbel Binnendraaiend">${currentLang === 'nl' ? 'Dubbel Binnendraaiend' : 'Double Ouvrant vers l\'intérieur'}</option>
+                    <option value="Dubbel Buitendraaiend">${currentLang === 'nl' ? 'Dubbel Buitendraaiend' : 'Double Ouvrant vers l\'extérieur'}</option>
+                    <option value="Enkel DIN Links Binnendraaiend">${currentLang === 'nl' ? 'Enkel DIN Links Binnendraaiend' : 'Simple DIN Gauche Intérieur'}</option>
+                    <option value="Enkel DIN Links Buitendraaiend">${currentLang === 'nl' ? 'Enkel DIN Links Buitendraaiend' : 'Simple DIN Gauche Extérieur'}</option>
+                    <option value="Enkel DIN Rechts Binnendraaiend">${currentLang === 'nl' ? 'Enkel DIN Rechts Binnendraaiend' : 'Simple DIN Droite Intérieur'}</option>
+                    <option value="Enkel DIN Rechts Buitendraaiend">${currentLang === 'nl' ? 'Enkel DIN Rechts Buitendraaiend' : 'Simple DIN Droite Extérieur'}</option>
+                `;
+            } else {
+                openingSelect.innerHTML = `
+                    <option value="Dubbel (Centraal)">${currentLang === 'nl' ? 'Dubbel (Centraal)' : 'Double (Central)'}</option>
+                    <option value="Linksopenend (OG)">${currentLang === 'nl' ? 'Linksopenend (OG)' : 'Ouverture Gauche (OG)'}</option>
+                    <option value="Rechtsopenend (OR)">${currentLang === 'nl' ? 'Rechtsopenend (OR)' : 'Ouverture Droite (OR)'}</option>
+                `;
+            }
+
+            const draaideurArm = document.getElementById('draaideur-arm');
+            if(draaideurArm) {
+                draaideurArm.options[0].text = currentLang === 'nl' ? "Glijarm (Push / Pull)" : "Bras à glissière (Push/Pull)";
+                draaideurArm.options[1].text = currentLang === 'nl' ? "Schaararm (Push / Pull)" : "Bras à compas (Push/Pull)";
+            }
+        }
+
+
+        // --- EXISTING APP LOGIC ---
+        const ralDatabase = [
+            { ral: "RAL 1013", hex: "#E3D9C6", label: "Parelwit", keywords: "wit parelwit beige blanc 1013" },
+            { ral: "RAL 3020", hex: "#CC0605", label: "Verkeersrood", keywords: "rood red rouge brandweerrood 3020" },
+            { ral: "RAL 5010", hex: "#0E46A3", label: "Gentiaanblauw", keywords: "blauw blue bleu gentiaanblauw 5010" },
+            { ral: "RAL 7016", hex: "#383E42", label: "Antracietgrijs", keywords: "antraciet grijs gris grey 7016" },
+            { ral: "RAL 9005", hex: "#1A1A1A", label: "Gitzwart", keywords: "zwart black noir 9005" },
+            { ral: "RAL 9006", hex: "#A5A8A6", label: "Blank aluminium", keywords: "zilver silver argent blank anodisé anodise ano natuur 9006" },
+            { ral: "RAL 9010", hex: "#FFFFFF", label: "Zuiver wit", keywords: "wit zuiverwit blanc 9010" },
+            { ral: "RAL 9016", hex: "#F4F8F4", label: "Verkeerswit", keywords: "wit white blanc verkeerswit 9016" }
+        ];
+
+        const defaultRals = ["RAL 9016", "RAL 9005", "RAL 7016", "RAL 9006", "RAL 3020", "RAL 5010"];
+
+        function resetSchetsEnOpties(isHardReset) {
+            let klantData = [];
+            let klantInputs = [];
+            
+            if(!isHardReset) {
+                const klantGroup = document.getElementById('klant-group');
+                klantInputs = klantGroup.querySelectorAll('input');
+                klantData = Array.from(klantInputs).map(input => input.value);
+            }
+            
+            document.getElementById('opmeting-form').reset();
+            
+            if(!isHardReset) {
+                klantInputs.forEach((input, index) => {
+                    input.value = klantData[index];
+                });
+            }
+            
+            const deurtypeEl = document.getElementById('deurtype');
+            if (deurtypeEl) {
+                deurtypeEl.dispatchEvent(new Event('change'));
+            }
+            updateVisual();
+        }
+
+        function renderSwatches(filterText = "") {
+            const container = document.getElementById('ral-palette');
+            if (!container) return;
+            container.innerHTML = '';
+            
+            let filtered = [];
+            const term = (filterText || '').toLowerCase().trim();
+            
+            if (term.length === 0) {
+                filtered = ralDatabase.filter(item => defaultRals.includes(item.ral));
+            } else {
+                filtered = ralDatabase.filter(item => {
+                    return (item.keywords || '').includes(term) || (item.label || '').toLowerCase().includes(term) || (item.ral || '').toLowerCase().includes(term);
+                }).slice(0, 10);
+            }
+
+            filtered.forEach(item => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'w-6 h-6 rounded-full border border-gray-300 shadow-sm transition-transform hover:scale-110 focus:outline-none focus:ring-2 focus:ring-blue-500';
+                btn.style.backgroundColor = item.hex;
+                btn.title = `${item.ral} (${item.label})`;
+                
+                const currentVal = document.getElementById('ral-kleur').value.toLowerCase().trim();
+                if (item.ral.toLowerCase() === currentVal || currentVal.includes(item.ral.toLowerCase())) {
+                     btn.classList.add('ring-2', 'ring-blue-500', 'scale-110');
+                }
+
+                btn.onclick = (e) => {
+                    e.preventDefault();
+                    document.getElementById('ral-kleur').value = item.ral;
+                    updateVisual();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function updateVisual() {
+            const deurtype = document.getElementById('deurtype').value;
+            const opening = document.getElementById('openingswijze').value || "";
+            const armSoort = document.getElementById('draaideur-arm') ? document.getElementById('draaideur-arm').value : '';
+            const vloergeleiderVal = document.getElementById('vloergeleider') ? document.getElementById('vloergeleider').value : '';
+            
+            const tb = document.getElementById('dim-tb').value || '--';
+            const th = document.getElementById('dim-th').value || '--';
+            const lb = document.getElementById('dim-lb').value || '--';
+            const lh = document.getElementById('dim-lh').value || '--';
+            const kaph = document.getElementById('dim-kap-h').value || '--';
+            const kapd = document.getElementById('dim-kap-d').value || '--';
+            
+            const slotType = document.getElementById('slotmechanisme').value;
+            const vloerslotPosGroup = document.getElementById('vloerslot-positie-group');
+            if(vloerslotPosGroup) {
+                if(slotType.includes('vloer')) vloerslotPosGroup.classList.remove('hidden');
+                else vloerslotPosGroup.classList.add('hidden');
+            }
+
+            const ralInput = document.getElementById('ral-kleur').value;
+            const deurlocatie = document.getElementById('deurlocatie').value;
+
+            const printLoc = document.getElementById('print-deurlocatie');
+            if(printLoc) {
+                const locStr = currentLang === 'nl' ? 'Locatie' : 'Emplacement';
+                printLoc.textContent = deurlocatie ? `- ${locStr}: ${deurlocatie}` : '';
+            }
+
+            const isSwing = deurtype === 'Draaideur';
+            let isDubbel = false;
+            let isL = false;
+            let isR = false;
+
+            if (isSwing) {
+                if (opening.includes('Dubbel')) {
+                    isDubbel = true;
+                } else if (opening.includes('Links')) {
+                    isL = true;
+                } else if (opening.includes('Rechts')) {
+                    isR = true;
+                } else {
+                    isR = true;
+                }
+            } else {
+                isDubbel = opening.includes('Dubbel') || opening.includes('Double');
+                isL = opening.includes('Links') || opening.includes('Gauche');
+                isR = opening.includes('Rechts') || opening.includes('Droite');
+                if(!isDubbel && !isL && !isR) isDubbel = true;
+            }
+
+            const koordophangingRow = document.getElementById('koordophanging-row');
+            const rowProfielSysteem = document.getElementById('row-profielsysteem');
+            
+            if (isSwing) {
+                if(koordophangingRow) koordophangingRow.classList.add('hidden');
+                if(rowProfielSysteem) rowProfielSysteem.classList.add('hidden');
+            } else {
+                if(koordophangingRow) koordophangingRow.classList.remove('hidden');
+                if(rowProfielSysteem) rowProfielSysteem.classList.remove('hidden');
+            }
+
+            const splWidthInput = document.getElementById('dim-spl-b');
+            const sprWidthInput = document.getElementById('dim-spr-b');
+            const splHeightInput = document.getElementById('dim-spl-h');
+            const sprHeightInput = document.getElementById('dim-spr-h');
+            
+            if(!isSwing && isDubbel) {
+                if(sprWidthInput && splWidthInput && splWidthInput.value) {
+                    sprWidthInput.value = splWidthInput.value;
+                }
+                if(sprHeightInput && splHeightInput && splHeightInput.value) {
+                    sprHeightInput.value = splHeightInput.value;
+                }
+            }
+
+            const lblPanelHeader = document.getElementById('lbl-panel-header');
+            const lblTitleL = document.getElementById('lbl-panel-title-sl');
+            const lblBL = document.getElementById('lbl-panel-b-l');
+            const lblHL = document.getElementById('lbl-panel-h-l');
+            const lblTitleR = document.getElementById('lbl-panel-title-r');
+            const lblBR = document.getElementById('lbl-panel-b-r');
+            const lblHR = document.getElementById('lbl-panel-h-r');
+            const sprDimGroup = document.getElementById('spr-dimension-group');
+
+            if (isSwing) {
+                if(lblPanelHeader) lblPanelHeader.textContent = currentLang === 'nl' ? "Deurvleugels: Links & Rechts" : "Vantaux : Gauche & Droit";
+                if(lblTitleL) lblTitleL.textContent = currentLang === 'nl' ? "Deur Links" : "Porte Gauche";
+                if(lblBL) lblBL.textContent = currentLang === 'nl' ? "Breedte (Deur L)" : "Largeur (Porte G)";
+                if(lblHL) lblHL.textContent = currentLang === 'nl' ? "Hoogte (Deur L)" : "Hauteur (Porte G)";
+                if(lblTitleR) lblTitleR.textContent = currentLang === 'nl' ? "Deur Rechts" : "Porte Droite";
+                if(lblBR) lblBR.textContent = currentLang === 'nl' ? "Breedte (Deur R)" : "Largeur (Porte D)";
+                if(lblHR) lblHR.textContent = currentLang === 'nl' ? "Hoogte (Deur R)" : "Hauteur (Porte D)";
+                if(sprDimGroup) sprDimGroup.style.display = 'block';
+            } else {
+                if(lblPanelHeader) lblPanelHeader.textContent = currentLang === 'nl' ? "Schuifpaneel & Vaste Panelen" : "Panneau Coulissant & Panneaux Fixes";
+                if(lblTitleL) lblTitleL.textContent = currentLang === 'nl' ? "Schuifpaneel Links (SP L)" : "Panneau Coulissant Gauche (PC G)";
+                if(lblBL) lblBL.textContent = currentLang === 'nl' ? "Breedte (SP L)" : "Largeur (PC G)";
+                if(lblHL) lblHL.textContent = currentLang === 'nl' ? "Hoogte (SP L)" : "Hauteur (PC G)";
+                if(lblTitleR) lblTitleR.textContent = currentLang === 'nl' ? "Schuifpaneel Rechts (SP R)" : "Panneau Coulissant Droit (PC D)";
+                if(lblBR) lblBR.textContent = currentLang === 'nl' ? "Breedte (SP R)" : "Largeur (PC D)";
+                if(lblHR) lblHR.textContent = currentLang === 'nl' ? "Hoogte (SP R)" : "Hauteur (PC D)";
+                if(sprDimGroup) sprDimGroup.style.display = isDubbel ? 'none' : 'block';
+            }
+
+            document.getElementById('svg-val-tb').textContent = (currentLang === 'nl' ? 'TB: ' : 'LT: ') + `${tb} mm`;
+            document.getElementById('svg-val-th').textContent = (currentLang === 'nl' ? 'TH: ' : 'HT: ') + `${th} mm`;
+            document.getElementById('svg-val-lb').textContent = (currentLang === 'nl' ? 'LB: ' : 'LP: ') + `${lb} mm`;
+            document.getElementById('svg-val-lh').textContent = (currentLang === 'nl' ? 'LH: ' : 'HP: ') + `${lh} mm`;
+            document.getElementById('svg-val-kap').textContent = (currentLang === 'nl' ? `Kap H: ${kaph} / D: ${kapd}` : `Capot H: ${kaph} / P: ${kapd}`);
+            
+            const ralTextEl = document.getElementById('svg-val-ral');
+            if (ralTextEl) ralTextEl.textContent = ralInput ? (currentLang === 'nl' ? 'Kleur: ' : 'Couleur: ') + ralInput : '';
+
+            let kapColor = "#f3f4f6";
+            let kapTextColor = "#333";
+            const ralLower = ralInput.toLowerCase().trim();
+            let matchedHex = null;
+            
+            if (ralLower) {
+                const exactMatch = ralDatabase.find(item => item.ral.toLowerCase() === ralLower || item.keywords.includes(ralLower));
+                if (exactMatch) matchedHex = exactMatch.hex;
+                else {
+                    const numMatch = ralLower.match(/\d{4}/);
+                    if (numMatch) {
+                        const ralMatch = ralDatabase.find(item => item.ral.includes(numMatch[0]));
+                        if(ralMatch) matchedHex = ralMatch.hex;
+                    }
+                    if (!matchedHex && ralLower.match(/^#[0-9a-f]{3,6}$/i)) matchedHex = ralLower.match(/^#[0-9a-f]{3,6}$/i)[0];
+                }
+            }
+            if (matchedHex) kapColor = matchedHex;
+            renderSwatches(ralLower);
+
+            function getBrightness(hex) {
+                hex = hex.replace('#', '');
+                if (hex.length === 3) hex = hex.split('').map(c => c+c).join('');
+                if (hex.length !== 6) return 255;
+                return (parseInt(hex.substring(0, 2), 16) * 299 + parseInt(hex.substring(2, 4), 16) * 587 + parseInt(hex.substring(4, 6), 16) * 114) / 1000;
+            }
+            if (getBrightness(kapColor) < 128) kapTextColor = "#fff";
+
+            const kapRect = document.getElementById('svg-kap-rect');
+            const kapTextEl = document.getElementById('svg-val-kap');
+            if (kapRect) kapRect.setAttribute('fill', kapColor);
+            if (kapTextEl) kapTextEl.setAttribute('fill', kapTextColor);
+            if (ralTextEl) ralTextEl.setAttribute('fill', kapTextColor);
+
+            const lockEm = document.getElementById('lock-em-kap');
+            if (lockEm) lockEm.style.opacity = slotType.startsWith('em-') ? '1' : '0';
+            
+            const handleL = document.getElementById('handle-l');
+            const handleR = document.getElementById('handle-r');
+            if(handleL) handleL.style.opacity = (isSwing && (isL || isDubbel)) ? '1' : '0';
+            if(handleR) handleR.style.opacity = (isSwing && (isR || isDubbel)) ? '1' : '0';
+
+            const railUL = document.getElementById('rail-u-l');
+            const railLL = document.getElementById('rail-l-l');
+            const railOmegaL = document.getElementById('rail-omega-l');
+            const railUR = document.getElementById('rail-u-r');
+            const railLR = document.getElementById('rail-l-r');
+            const railOmegaR = document.getElementById('rail-omega-r');
+
+            if(railUL) railUL.style.opacity = (!isSwing && vloergeleiderVal === 'U-Model') ? '1' : '0';
+            if(railLL) railLL.style.opacity = (!isSwing && vloergeleiderVal === 'L-Model') ? '1' : '0';
+            if(railOmegaL) railOmegaL.style.opacity = (!isSwing && vloergeleiderVal === 'Omega-rail') ? '1' : '0';
+            if(railUR) railUR.style.opacity = (!isSwing && vloergeleiderVal === 'U-Model') ? '1' : '0';
+            if(railLR) railLR.style.opacity = (!isSwing && vloergeleiderVal === 'L-Model') ? '1' : '0';
+            if(railOmegaR) railOmegaR.style.opacity = (!isSwing && vloergeleiderVal === 'Omega-rail') ? '1' : '0';
+
+            function updatePanel(id, x, w, visible, textLabel, dimVal, heightVal) {
+                const group = document.getElementById(`svg-group-${id}`);
+                const rect = document.getElementById(`rect-${id}`);
+                const rect2 = document.getElementById(`rect-${id}-2`);
+                const textEl = document.getElementById(`text-${id}`);
+                const dimEl = document.getElementById(`svg-val-${id}-dim`);
+                const greenArrow = document.getElementById(`arrow-dir-${id}`);
+                
+                const hingeLeftGroup = document.getElementById('hinge-group-left');
+                const hingeRightGroup = document.getElementById('hinge-group-right');
+                const hingeLeftGroupR = document.getElementById('hinge-group-left-r');
+                const hingeRightGroupR = document.getElementById('hinge-group-right-r');
+                
+                const isTelescopic = document.getElementById('profielsysteem').value.includes('TST') && !isSwing;
+
+                if(!group || !rect || !textEl) return;
+                
+                group.style.opacity = visible ? '1' : '0';
+
+                if (isSwing && visible) {
+                    if (id === 'spl') {
+                        if (isL || isDubbel) {
+                            if(hingeLeftGroup) { 
+                                hingeLeftGroup.style.opacity = '1'; 
+                                hingeLeftGroup.querySelectorAll('rect')[0].setAttribute('x', x + 2); 
+                                hingeLeftGroup.querySelectorAll('rect')[1].setAttribute('x', x + 2); 
+                            }
+                            if(hingeRightGroup) hingeRightGroup.style.opacity = '0';
+                        } else if (isR) {
+                            if(hingeLeftGroup) hingeLeftGroup.style.opacity = '0';
+                            if(hingeRightGroup) hingeRightGroup.style.opacity = '0';
+                        }
+                    } else if (id === 'spr') {
+                        if (isR || isDubbel) {
+                            if(hingeRightGroupR) { 
+                                hingeRightGroupR.style.opacity = '1'; 
+                                hingeRightGroupR.querySelectorAll('rect')[0].setAttribute('x', x + w - 10); 
+                                hingeRightGroupR.querySelectorAll('rect')[1].setAttribute('x', x + w - 10); 
+                            }
+                            if(hingeLeftGroupR) hingeLeftGroupR.style.opacity = '0';
+                        } else if (isL) {
+                            if(hingeLeftGroupR) hingeLeftGroupR.style.opacity = '0';
+                            if(hingeRightGroupR) hingeRightGroupR.style.opacity = '0';
+                        }
+                    }
+                } else {
+                    if(id === 'spl') {
+                        if(hingeLeftGroup) hingeLeftGroup.style.opacity = '0';
+                        if(hingeRightGroup) hingeRightGroup.style.opacity = '0';
+                    }
+                    if(id === 'spr') {
+                        if(hingeLeftGroupR) hingeLeftGroupR.style.opacity = '0';
+                        if(hingeRightGroupR) hingeRightGroupR.style.opacity = '0';
+                    }
+                }
+
+                if(visible) {
+                    if (isTelescopic && (id === 'spl' || id === 'spr')) {
+                        if (rect2) rect2.style.display = 'block';
+                        let halfW = (w / 2) + 10;
+                        if (id === 'spl') {
+                            rect.setAttribute('x', x + w/2 - 10);
+                            rect.setAttribute('width', halfW);
+                            if (rect2) { rect2.setAttribute('x', x); rect2.setAttribute('width', halfW); }
+                        } else {
+                            rect.setAttribute('x', x);
+                            rect.setAttribute('width', halfW);
+                            if (rect2) { rect2.setAttribute('x', x + w/2 - 10); rect2.setAttribute('width', halfW); }
+                        }
+                    } else {
+                        if (rect2) rect2.style.display = 'none';
+                        rect.setAttribute('x', x);
+                        rect.setAttribute('width', w);
+                    }
+
+                    textEl.setAttribute('x', x + w/2);
+                    if(dimEl) dimEl.setAttribute('x', x + w/2);
+                    if(textLabel) textEl.textContent = textLabel;
+                    if(dimEl) {
+                        const hStr = heightVal ? `H: ${heightVal}mm` : '';
+                        const wStr = dimVal ? (currentLang === 'nl' ? `B: ${dimVal}mm` : `L: ${dimVal}mm`) : '';
+                        dimEl.textContent = (wStr || hStr) ? `${wStr} ${hStr}`.trim() : '-- x --';
+                    }
+
+                    if (!isSwing && (id === 'spl' || id === 'spr')) {
+                        if(greenArrow) {
+                            greenArrow.style.opacity = '1';
+                            if (id === 'spl') {
+                                greenArrow.setAttribute('x1', x + w - 20);
+                                greenArrow.setAttribute('x2', x + 20);
+                            } else {
+                                greenArrow.setAttribute('x1', x + 20);
+                                greenArrow.setAttribute('x2', x + w - 20);
+                            }
+                            greenArrow.setAttribute('y1', 200);
+                            greenArrow.setAttribute('y2', 200);
+                        }
+                    } else {
+                        if(greenArrow) greenArrow.style.opacity = '0';
+                    }
+                } else {
+                    if(greenArrow) greenArrow.style.opacity = '0';
+                }
+            }
+
+            const vplB = document.getElementById('dim-vpl-b').value || '';
+            const vplH = document.getElementById('dim-vpl-h').value || '';
+            const vprB = document.getElementById('dim-vpr-b').value || '';
+            const vprH = document.getElementById('dim-vpr-h').value || '';
+            const splB = document.getElementById('dim-spl-b').value || '';
+            const splH = document.getElementById('dim-spl-h').value || '';
+            const sprB = document.getElementById('dim-spr-b').value || '';
+            const sprH = document.getElementById('dim-spr-h').value || '';
+
+            const t_vpl = currentLang === 'nl' ? 'VP L' : 'PF G';
+            const t_vpr = currentLang === 'nl' ? 'VP R' : 'PF D';
+            const t_spl = currentLang === 'nl' ? 'SP L' : 'PC G';
+            const t_spr = currentLang === 'nl' ? 'SP R' : 'PC D';
+            const t_deurl = currentLang === 'nl' ? 'Deur L' : 'Porte G';
+            const t_deurr = currentLang === 'nl' ? 'Deur R' : 'Porte D';
+
+            if (isSwing) {
+                if (isDubbel) {
+                    updatePanel('vpl', 50, 90, true, t_vpl, vplB, vplH);
+                    updatePanel('spl', 140, 160, true, t_deurl, splB, splH);
+                    updatePanel('spr', 300, 160, true, t_deurr, sprB, sprH);
+                    updatePanel('vpr', 460, 90, true, t_vpr, vprB, vprH);
+                } else if (isL) {
+                    updatePanel('vpl', 50, 160, true, t_vpl, vplB, vplH);
+                    updatePanel('spl', 210, 290, true, t_deurl, splB, splH);
+                    updatePanel('spr', 0, 0, false);
+                    updatePanel('vpr', 0, 0, false);
+                } else {
+                    updatePanel('vpl', 0, 0, false);
+                    updatePanel('spl', 0, 0, false);
+                    updatePanel('spr', 100, 290, true, t_deurr, sprB, sprH);
+                    updatePanel('vpr', 390, 160, true, t_vpr, vprB, vprH);
+                }
+            } else {
+                if (isDubbel) {
+                    updatePanel('vpl', 50, 100, true, t_vpl, vplB, vplH);
+                    updatePanel('spl', 150, 150, true, t_spl, splB, splH);
+                    updatePanel('spr', 300, 150, true, t_spr, sprB, sprH);
+                    updatePanel('vpr', 450, 100, true, t_vpr, vprB, vprH);
+                } else if (isL) {
+                    updatePanel('vpl', 50, 180, true, t_vpl, vplB, vplH);
+                    updatePanel('spl', 230, 270, true, t_spl, splB, splH);
+                    updatePanel('spr', 0, 0, false);
+                    updatePanel('vpr', 0, 0, false);
+                } else {
+                    updatePanel('vpl', 0, 0, false);
+                    updatePanel('spl', 0, 0, false);
+                    updatePanel('spr', 100, 270, true, t_spr, sprB, sprH);
+                    updatePanel('vpr', 370, 180, true, t_vpr, vprB, vprH);
+                }
+            }
+
+            const swingOpL = document.getElementById('svg-swing-op-l');
+            const swingOpR = document.getElementById('svg-swing-op-r');
+            const armGlijL = document.getElementById('arm-glij-l');
+            const armSchaarL = document.getElementById('arm-schaar-l');
+            const armGlijR = document.getElementById('arm-glij-r');
+            const armSchaarR = document.getElementById('arm-schaar-r');
+
+            if(swingOpL) swingOpL.style.opacity = '0';
+            if(swingOpR) swingOpR.style.opacity = '0';
+            if(armGlijL) armGlijL.style.opacity = '0';
+            if(armSchaarL) armSchaarL.style.opacity = '0';
+            if(armGlijR) armGlijR.style.opacity = '0';
+            if(armSchaarR) armSchaarR.style.opacity = '0';
+
+            if (isSwing) {
+                const useGlij = armSoort.includes('Glijarm') || armSoort.includes('glissière');
+                const useSchaar = armSoort.includes('Schaararm') || armSoort.includes('compas');
+
+                if (isL || isDubbel) {
+                    let opX = isL ? 210 : 140;
+                    if(swingOpL) {
+                        swingOpL.style.opacity = '1';
+                        document.getElementById('ed-box-l').setAttribute('x', opX);
+                        document.getElementById('ed-box-l').setAttribute('width', 120);
+                        document.getElementById('ed-txt-l').setAttribute('x', opX + 60);
+                        
+                        if (useGlij && armGlijL) {
+                            armGlijL.style.opacity = '1';
+                            document.getElementById('arm-glij-line-l').setAttribute('x1', opX + 60);
+                            document.getElementById('arm-glij-line-l').setAttribute('x2', opX + 100);
+                            document.getElementById('arm-glij-dot-l').setAttribute('cx', opX + 100);
+                            let railL = document.getElementById('arm-glij-rail-l');
+                            if(railL) {
+                                railL.setAttribute('x', opX + 10);
+                                railL.setAttribute('width', 100);
+                            }
+                        }
+                        if (useSchaar && armSchaarL) {
+                            armSchaarL.style.opacity = '1';
+                            document.getElementById('arm-schaar-line-l').setAttribute('points', `${opX+60},60 ${opX+85},80 ${opX+110},100`);
+                            document.getElementById('arm-schaar-dot-l').setAttribute('cx', opX + 110);
+                        }
+                    }
+                    if (handleL) {
+                        const splRect = document.getElementById('rect-spl');
+                        if (splRect) {
+                            let rectX = parseInt(splRect.getAttribute('x')) || 0;
+                            let rectW = parseInt(splRect.getAttribute('width')) || 0;
+                            if (rectW > 0) handleL.setAttribute('cx', rectX + rectW - 15);
+                        }
+                    }
+                }
+                
+                if (isR || isDubbel) {
+                    let opXEnd = isR ? 390 : 460;
+                    let opX = opXEnd - 120;
+                    if(swingOpR) {
+                        swingOpR.style.opacity = '1';
+                        document.getElementById('ed-box-r').setAttribute('x', opX);
+                        document.getElementById('ed-box-r').setAttribute('width', 120);
+                        document.getElementById('ed-txt-r').setAttribute('x', opX + 60);
+                        
+                        if (useGlij && armGlijR) {
+                            armGlijR.style.opacity = '1';
+                            document.getElementById('arm-glij-line-r').setAttribute('x1', opX + 60);
+                            document.getElementById('arm-glij-line-r').setAttribute('x2', opX + 20);
+                            document.getElementById('arm-glij-dot-r').setAttribute('cx', opX + 20);
+                            let railR = document.getElementById('arm-glij-rail-r');
+                            if(railR) {
+                                railR.setAttribute('x', opX + 10);
+                                railR.setAttribute('width', 100);
+                            }
+                        }
+                        if (useSchaar && armSchaarR) {
+                            armSchaarR.style.opacity = '1';
+                            document.getElementById('arm-schaar-line-r').setAttribute('points', `${opX+60},60 ${opX+35},80 ${opX+10},100`);
+                            document.getElementById('arm-schaar-dot-r').setAttribute('cx', opX + 10);
+                        }
+                    }
+                    if (handleR) {
+                        const sprRect = document.getElementById('rect-spr');
+                        if (sprRect) {
+                            let rectX = parseInt(sprRect.getAttribute('x')) || 0;
+                            if (rectX > 0) handleR.setAttribute('cx', rectX + 15);
+                        }
+                    }
+                }
+            }
+
+            const lockTv = document.getElementById('lock-tv');
+            const rectTv = document.getElementById('rect-tv-lock');
+            const textTv = document.getElementById('text-tv-lock');
+            
+            if (lockTv) lockTv.style.opacity = slotType === 'tv100-200' ? '1' : '0';
+            
+            if (slotType === 'tv100-200') {
+                let tvX = 0;
+                let tvY = 95; 
+                if (isDubbel || isL) {
+                    const splRect = document.getElementById('rect-spl');
+                    if (splRect) {
+                        let rX = parseInt(splRect.getAttribute('x')) || 0;
+                        let rW = parseInt(splRect.getAttribute('width')) || 0;
+                        tvX = rX + rW - 35;
+                        tvY = (parseInt(splRect.getAttribute('y')) || 95) + 5;
+                    }
+                } else if (isR) {
+                    const sprRect = document.getElementById('rect-spr');
+                    if (sprRect) {
+                        tvX = (parseInt(sprRect.getAttribute('x')) || 0) + 5;
+                        tvY = (parseInt(sprRect.getAttribute('y')) || 95) + 5;
+                    }
+                }
+                if (rectTv && textTv) {
+                    rectTv.setAttribute('x', tvX);
+                    rectTv.setAttribute('y', tvY);
+                    textTv.setAttribute('x', tvX + 15);
+                    textTv.setAttribute('y', tvY + 9);
+                }
+            }
+
+            const offsetVal = document.getElementById('dim-vloerslot-pos').value || '--';
+            const visOffset = 15;
+            
+            const lockGrL = document.getElementById('lock-vloer-group-l');
+            const txtLockL = document.getElementById('txt-lock-offset-l');
+            const lockGrR = document.getElementById('lock-vloer-group-r');
+            const txtLockR = document.getElementById('txt-lock-offset-r');
+
+            if(lockGrL) lockGrL.style.opacity = '0';
+            if(txtLockL) txtLockL.style.opacity = '0';
+            if(lockGrR) lockGrR.style.opacity = '0';
+            if(txtLockR) txtLockR.style.opacity = '0';
+
+            const offsetStr = currentLang === 'nl' ? 'Offset: ' : 'Décalage: ';
+
+            if(slotType.includes('vloer')) {
+                if (isDubbel) {
+                    if(lockGrL && txtLockL) {
+                        lockGrL.style.opacity = '1';
+                        txtLockL.style.opacity = '1';
+                        txtLockL.textContent = `${offsetStr}${offsetVal}mm`;
+                        const splRect = document.getElementById('rect-spl');
+                        if (splRect) {
+                            let rX = parseInt(splRect.getAttribute('x')) || 0;
+                            let rW = parseInt(splRect.getAttribute('width')) || 0;
+                            let sluitkantX = rX + rW;
+                            let drawX = sluitkantX - visOffset - 30;
+                            document.getElementById('lock-vl').setAttribute('x', drawX);
+                            document.getElementById('lock-vlc').setAttribute('cx', drawX + 15);
+                            txtLockL.setAttribute('x', drawX + 15);
+                        }
+                    }
+                    if(lockGrR && txtLockR) {
+                        lockGrR.style.opacity = '1';
+                        txtLockR.style.opacity = '1';
+                        txtLockR.textContent = `${offsetStr}${offsetVal}mm`;
+                        const sprRect = document.getElementById('rect-spr');
+                        if (sprRect) {
+                            let sluitkantX = parseInt(sprRect.getAttribute('x')) || 0;
+                            let drawX = sluitkantX + visOffset; 
+                            document.getElementById('lock-vr').setAttribute('x', drawX);
+                            document.getElementById('lock-vrc').setAttribute('cx', drawX + 15);
+                            txtLockR.setAttribute('x', drawX + 15);
+                        }
+                    }
+                } else if (isL) {
+                    if(lockGrL && txtLockL) {
+                        lockGrL.style.opacity = '1';
+                        txtLockL.style.opacity = '1';
+                        txtLockL.textContent = `${offsetStr}${offsetVal}mm`;
+                        const splRect = document.getElementById('rect-spl');
+                        if (splRect) {
+                            let rX = parseInt(splRect.getAttribute('x')) || 0;
+                            let rW = parseInt(splRect.getAttribute('width')) || 0;
+                            let sluitkantX = rX + rW;
+                            let drawX = sluitkantX - visOffset - 30; 
+                            document.getElementById('lock-vl').setAttribute('x', drawX);
+                            document.getElementById('lock-vlc').setAttribute('cx', drawX + 15);
+                            txtLockL.setAttribute('x', drawX + 15);
+                        }
+                    }
+                } else if (isR) {
+                    if(lockGrR && txtLockR) {
+                        lockGrR.style.opacity = '1';
+                        txtLockR.style.opacity = '1';
+                        txtLockR.textContent = `${offsetStr}${offsetVal}mm`;
+                        const sprRect = document.getElementById('rect-spr');
+                        if (sprRect) {
+                            let sluitkantX = parseInt(sprRect.getAttribute('x')) || 0;
+                            let drawX = sluitkantX + visOffset; 
+                            document.getElementById('lock-vr').setAttribute('x', drawX);
+                            document.getElementById('lock-vrc').setAttribute('cx', drawX + 15);
+                            txtLockR.setAttribute('x', drawX + 15);
+                        }
+                    }
+                }
+            }
+
+            const calloutSwing = document.getElementById('callout-swing');
+            const calloutSpl = document.getElementById('callout-spl');
+            const calloutSpr = document.getElementById('callout-spr');
+
+            if(calloutSwing) calloutSwing.style.opacity = '0';
+            if(calloutSpl) calloutSpl.style.opacity = '0';
+            if(calloutSpr) calloutSpr.style.opacity = '0';
+
+            if (isSwing) {
+                if (calloutSwing) {
+                    calloutSwing.style.opacity = '1';
+                    const asmaat = document.getElementById('dim-draai-asm').value || '--';
+                    const muur = document.getElementById('dim-muur-deur-diepte').value || '--';
+                    const lAxe = currentLang === 'nl' ? 'Asm' : 'Axe';
+                    const lMur = currentLang === 'nl' ? 'Muur' : 'Mur';
+                    document.getElementById('txt-swing-asm').textContent = `${lAxe}: ${asmaat} | ${lMur}: ${muur}`;
+                    
+                    let opX = 0, opW = 0;
+                    if (isL || isDubbel) {
+                        const edBoxL = document.getElementById('ed-box-l');
+                        if(edBoxL) { opX = parseInt(edBoxL.getAttribute('x')) || 0; opW = parseInt(edBoxL.getAttribute('width')) || 0; }
+                    } else {
+                        const edBoxR = document.getElementById('ed-box-r');
+                        if(edBoxR) { opX = parseInt(edBoxR.getAttribute('x')) || 0; opW = parseInt(edBoxR.getAttribute('width')) || 0; }
+                    }
+                    if(opW > 0) document.getElementById('callout-swing-line').setAttribute('d', `M ${opX + opW/2} 42 L 350 25`);
+                }
+            } else {
+                const profB = document.getElementById('dim-prof-boven').value || '-';
+                const profO = document.getElementById('dim-prof-onder').value || '-';
+                const profZ = document.getElementById('dim-prof-zijkant').value || '-';
+                const profStr = `${profB}/${profO}/${profZ}`;
+
+                const lGlas = currentLang === 'nl' ? 'Glas:' : 'Verre:';
+                const lProf = currentLang === 'nl' ? 'Prof (B/O/Z):' : 'Prof (H/B/L):';
+                const lLat = currentLang === 'nl' ? 'Glaslat:' : 'Parclose:';
+
+                if (isDubbel || isL) {
+                    if (calloutSpl) {
+                        calloutSpl.style.opacity = '1';
+                        document.getElementById('txt-spl-title').textContent = isDubbel ? (currentLang === 'nl' ? "SP L&R Info:" : "PC G&D Info:") : (currentLang === 'nl' ? "SP L Info:" : "PC G Info:");
+                        document.getElementById('txt-spl-glas').textContent = `${lGlas} ` + (document.getElementById('dim-glasmaat').value || '--');
+                        document.getElementById('txt-spl-prof').textContent = `${lProf} ${profStr}`;
+                        document.getElementById('txt-spl-lat').textContent = `${lLat} ` + (document.getElementById('dim-glaslat-d').value || '--');
+
+                        const rectSpl = document.getElementById('rect-spl');
+                        if (rectSpl) {
+                            let rx = parseInt(rectSpl.getAttribute('x')) || 0;
+                            document.getElementById('callout-spl-line').setAttribute('d', `M 75 180 L ${rx + 15} 200`);
+                        }
+                    }
+                } else if (isR) {
+                    if (calloutSpr) {
+                        calloutSpr.style.opacity = '1';
+                        document.getElementById('txt-spr-title').textContent = currentLang === 'nl' ? "SP R Info:" : "PC D Info:";
+                        document.getElementById('txt-spr-glas').textContent = `${lGlas} ` + (document.getElementById('dim-glasmaat-r').value || '--');
+                        document.getElementById('txt-spr-prof').textContent = `${lProf} ${profStr}`;
+                        document.getElementById('txt-spr-lat').textContent = `${lLat} ` + (document.getElementById('dim-glaslat-d-r').value || '--');
+
+                        const rectSpr = document.getElementById('rect-spr');
+                        if (rectSpr) {
+                            let rx = parseInt(rectSpr.getAttribute('x')) || 0;
+                            let rw = parseInt(rectSpr.getAttribute('width')) || 0;
+                            document.getElementById('callout-spr-line').setAttribute('d', `M 525 180 L ${rx + rw - 15} 200`);
+                        }
+                    }
+                }
+            }
+        }
+
+        const inputsToWatch = [
+            'deurtype', 'openingswijze', 'draaideur-arm', 'dim-muur-deur-diepte', 
+            'profielsysteem', 'deurlocatie', 'dim-tb', 'dim-th', 'dim-lb', 'dim-lh', 
+            'dim-kap-h', 'dim-kap-d', 'dim-spl-b', 'dim-spl-h', 'dim-spr-b', 'dim-spr-h', 
+            'dim-vpl-b', 'dim-vpl-h', 'dim-vpr-b', 'dim-vpr-h', 'vloergeleider', 
+            'slotmechanisme', 'vloerslot-type', 'dim-vloerslot-pos', 'ral-kleur', 
+            'aandrijving-select', 'dim-draai-asm', 'dim-glaslat-d', 'dim-glasmaat', 
+            'dim-prof-boven', 'dim-prof-onder', 'dim-prof-zijkant', 'dim-glaslat-d-r', 
+            'dim-glasmaat-r'
+        ];
+        
+        inputsToWatch.forEach(id => {
+            const el = document.getElementById(id);
+            if(el) {
+                el.addEventListener('input', updateVisual);
+                el.addEventListener('change', updateVisual);
+            }
+        });
+        
+        const deurtypeEl = document.getElementById('deurtype');
+        if (deurtypeEl) {
+            deurtypeEl.addEventListener('change', function(e) {
+                const draaideurGroup = document.getElementById('draaideur-extra-group');
+                const aandrijvingSelect = document.getElementById('aandrijving-select');
+                
+                updateSelectOptions(); // refresh the dropdown choices via dictionary
+                
+                if (e.target.value === 'Draaideur') {
+                    if (draaideurGroup) draaideurGroup.classList.remove('hidden');
+                    if (aandrijvingSelect) {
+                        const opt = currentLang === 'nl' ? "Kies model..." : "Choisir modèle...";
+                        aandrijvingSelect.innerHTML = `
+                            <option value="" disabled selected>${opt}</option>
+                            <option>ED 100</option>
+                            <option>ED 250</option>
+                        `;
+                    }
+                } else {
+                    if (draaideurGroup) draaideurGroup.classList.add('hidden');
+                    if (aandrijvingSelect) {
+                        const opt = currentLang === 'nl' ? "Kies model..." : "Choisir modèle...";
+                        aandrijvingSelect.innerHTML = `
+                            <option value="" disabled selected>${opt}</option>
+                            <optgroup label="Schuifdeuren - ES PROLINE">
+                                <option>ES PROLINE 250/130</option>
+                                <option>ES PROLINE 250/180</option>
+                                <option>ES PROLINE 400</option>
+                                <option>ES PROLINE 500</option>
+                                <option>CS 80 MAGNEO</option>
+                            </optgroup>
+                        `;
+                    }
+                }
+                updateVisual();
+            });
+        }
+
+        window.onload = function() {
+            applyTranslations();
+            updateSelectOptions();
+            updateVisual();
+        };
+    </script>
+
+<script>(()=>{const q=id=>document.getElementById(id);const mids=['dim-tb','dim-th','dim-lb','dim-lh','dim-kap-h','dim-kap-d','dim-spl-b','dim-spl-h','dim-spr-b','dim-spr-h','dim-vpl-b','dim-vpl-h','dim-vpr-b','dim-vpr-h'];function req(){let a=new Set;if(q('replace-aandrijving').checked){['dim-tb','dim-th','dim-lb','dim-lh'].forEach(x=>a.add(x));if(!q('replace-zonder-kap').checked)['dim-kap-h','dim-kap-d'].forEach(x=>a.add(x))}if(q('replace-vleugel-l').checked||q('replace-beide-vleugels').checked)['dim-spl-b','dim-spl-h'].forEach(x=>a.add(x));if(q('replace-vleugel-r').checked||q('replace-beide-vleugels').checked)['dim-spr-b','dim-spr-h'].forEach(x=>a.add(x));if(q('replace-vast-l').checked||q('replace-beide-vast').checked)['dim-vpl-b','dim-vpl-h'].forEach(x=>a.add(x));if(q('replace-vast-r').checked||q('replace-beide-vast').checked)['dim-vpr-b','dim-vpr-h'].forEach(x=>a.add(x));return a}function ui(){let a=req();mids.forEach(id=>{q(id).required=a.has(id);q(id).classList.toggle('required-active',a.has(id))})}window.validateMeasurements=function(show=true){let e=[],a=req();document.querySelectorAll('.field-error').forEach(x=>x.classList.remove('field-error'));let base=currentLang==='fr'?[['werf','Chantier'],['datum-opmeting','Date de mesure'],['dossiernummer','Numéro de dossier'],['contactpersoon','Personne de contact'],['locatie','Emplacement'],['deurlocatie','Emplacement de la porte'],['technieker','Nom du technicien']]:[['werf','Werf'],['datum-opmeting','Datum'],['dossiernummer','Dossiernummer'],['contactpersoon','Contactpersoon'],['locatie','Locatie'],['deurlocatie','Deurlocatie'],['technieker','Naam technieker']];base.forEach(([id,l])=>{if(!q(id).value.trim()){q(id).classList.add('field-error');e.push(l+(currentLang==='fr'?' est obligatoire.':' is verplicht.'))}});mids.forEach(id=>{let v=q(id).value.trim();if(a.has(id)&&!v){q(id).classList.add('field-error');e.push((q(id).previousElementSibling?.textContent||id)+(currentLang==='fr'?' est obligatoire.':' is verplicht.'))}else if(v&&Number(v)<=0){q(id).classList.add('field-error');e.push((q(id).previousElementSibling?.textContent||id)+(currentLang==='fr'?' doit être supérieur à 0.':' moet groter zijn dan 0.'))}});let b=q('validation-box');b.innerHTML='';if(e.length&&show){b.classList.add('show');let ul=document.createElement('ul');e.forEach(t=>{let li=document.createElement('li');li.textContent=t;ul.append(li)});b.append(ul)}else b.classList.remove('show');return !e.length};window.validatedPrint=()=>{if(validateMeasurements())window.print()};function sec(){let v=q('deurtype').value==='Schuifdeur'&&(q('aandrijving-select').value||'').startsWith('ES PROLINE');q('proline-security-row').classList.toggle('hidden',!v);if(!v)q('security-rc2').checked=q('security-rc3').checked=false};q('aandrijving-select').addEventListener('change',sec);q('deurtype').addEventListener('change',()=>setTimeout(sec));q('security-rc2').onchange=e=>{if(e.target.checked)q('security-rc3').checked=false};q('security-rc3').onchange=e=>{if(e.target.checked)q('security-rc2').checked=false};['replace-aandrijving', 'replace-zonder-kap', 'replace-vleugel-l', 'replace-vleugel-r', 'replace-beide-vleugels', 'replace-vast-l', 'replace-vast-r', 'replace-beide-vast'].forEach(id=>q(id).addEventListener('change',ui));q('btn-ios').onclick=()=>{let u=location.href,uuid=crypto.randomUUID(),x=`<?xml version="1.0" encoding="UTF-8"?><plist version="1.0"><dict><key>PayloadContent</key><array><dict><key>FullScreen</key><true/><key>Icon</key><data>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</data><key>Label</key><string>Opmeting Mesure</string><key>PayloadIdentifier</key><string>be.opmeting.webclip.${uuid}</string><key>PayloadType</key><string>com.apple.webClip.managed</string><key>PayloadUUID</key><string>${uuid}</string><key>PayloadVersion</key><integer>1</integer><key>URL</key><string>${u}</string></dict></array><key>PayloadDisplayName</key><string>Opmeting Mesure</string><key>PayloadIdentifier</key><string>be.opmeting.profile.${uuid}</string><key>PayloadType</key><string>Configuration</string><key>PayloadUUID</key><string>${uuid}</string><key>PayloadVersion</key><integer>1</integer></dict></plist>`;let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([x],{type:'application/x-apple-aspen-config'}));a.download='Opmeting_Mesure.mobileconfig';a.click()};const ralLexicon={
+ nl:{'green beige':'groenbeige','sand yellow':'zandgeel','signal yellow':'signaalgeel','golden yellow':'goudgeel','honey yellow':'honinggeel','maize yellow':'maisgeel','daffodil yellow':'narcissengeel','brown beige':'bruinbeige','lemon yellow':'citroengeel','oyster white':'parelwit','light ivory':'licht ivoor','sulfur yellow':'zwavelgeel','saffron yellow':'saffraangeel','zinc yellow':'zinkgeel','grey beige':'grijsbeige','olive yellow':'olijfgeel','traffic yellow':'verkeersgeel','traffic orange':'verkeersoranje','traffic red':'verkeersrood','traffic blue':'verkeersblauw','traffic green':'verkeersgroen','traffic grey':'verkeersgrijs','traffic white':'verkeerswit','pure white':'zuiver wit','jet black':'gitzwart','anthracite grey':'antracietgrijs','light grey':'lichtgrijs','dark grey':'donkergrijs','silver grey':'zilvergrijs','blue grey':'blauwgrijs','green grey':'groengrijs','brown grey':'bruingrijs','yellow grey':'geelgrijs','black grey':'zwartgrijs','white aluminium':'blank aluminiumkleurig','grey aluminium':'grijs aluminiumkleurig','flame red':'vuurrood','ruby red':'robijnrood','wine red':'wijnrood','moss green':'mosgroen','leaf green':'bladgroen','cobalt blue':'kobaltblauw','sky blue':'hemelsblauw','ultramarine blue':'ultramarijnblauw','chocolate brown':'chocoladebruin','cream':'cremewit','ivory':'ivoor','beige':'beige','yellow':'geel','orange':'oranje','red':'rood','violet':'violet','blue':'blauw','green':'groen','grey':'grijs','gray':'grijs','brown':'bruin','white':'wit','black':'zwart','light':'licht','dark':'donker','pale':'bleek','pastel':'pastel','pearl':'parel','brilliant':'briljant','signal':'signaal','olive':'olijf'},
+ fr:{'green beige':'beige vert','sand yellow':'jaune sable','signal yellow':'jaune de securite','golden yellow':'jaune or','honey yellow':'jaune miel','maize yellow':'jaune mais','daffodil yellow':'jaune narcisse','brown beige':'beige brun','lemon yellow':'jaune citron','oyster white':'blanc perle','light ivory':'ivoire clair','sulfur yellow':'jaune soufre','saffron yellow':'jaune safran','zinc yellow':'jaune zinc','grey beige':'beige gris','olive yellow':'jaune olive','traffic yellow':'jaune signalisation','traffic orange':'orange signalisation','traffic red':'rouge signalisation','traffic blue':'bleu signalisation','traffic green':'vert signalisation','traffic grey':'gris signalisation','traffic white':'blanc signalisation','pure white':'blanc pur','jet black':'noir fonce','anthracite grey':'gris anthracite','light grey':'gris clair','dark grey':'gris fonce','silver grey':'gris argent','blue grey':'gris bleu','green grey':'gris vert','brown grey':'gris brun','yellow grey':'gris jaune','black grey':'gris noir','white aluminium':'aluminium blanc','grey aluminium':'aluminium gris','flame red':'rouge feu','ruby red':'rouge rubis','wine red':'rouge vin','moss green':'vert mousse','leaf green':'vert feuillage','cobalt blue':'bleu cobalt','sky blue':'bleu ciel','ultramarine blue':'bleu outremer','chocolate brown':'brun chocolat','cream':'blanc creme','ivory':'ivoire','beige':'beige','yellow':'jaune','orange':'orange','red':'rouge','violet':'violet','blue':'bleu','green':'vert','grey':'gris','gray':'gris','brown':'brun','white':'blanc','black':'noir','light':'clair','dark':'fonce','pale':'pale','pastel':'pastel','pearl':'nacre','brilliant':'brillant','signal':'securite','olive':'olive'}
+};
+function normalizeRalText(value=''){return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
+function localizeRalName(name,lang=currentLang){
+ if(lang!=='nl'&&lang!=='fr')return name;
+ let result=normalizeRalText(name), map=ralLexicon[lang];
+ Object.keys(map).sort((a,b)=>b.length-a.length).forEach(key=>{result=result.replace(new RegExp('\\b'+key.replace(/[.*+?^${}()|[\\]\\]/g,'\\$&')+'\\b','g'),map[key])});
+ return result.replace(/\b\w/g,c=>c.toUpperCase());
+}
+function enrichRalItem(item){
+ const en=item.labelEn||item.label||'';
+ const nl=localizeRalName(en,'nl'),fr=localizeRalName(en,'fr');
+ return {...item,labelEn:en,labelNl:nl,labelFr:fr,keywords:normalizeRalText([item.ral,en,nl,fr,item.keywords||''].join(' '))};
+}
+function ralDisplayName(item){return currentLang==='fr'?(item.labelFr||item.labelEn):currentLang==='nl'?(item.labelNl||item.labelEn):item.labelEn}
+async function loadFullRalPalette(){
+  ralDatabase.splice(0,ralDatabase.length,...ralDatabase.map(enrichRalItem));
+  const status=document.getElementById('ral-status');
+  if(status)status.textContent=currentLang==='fr'?'Chargement de 216 couleurs RAL Classic…':'216 RAL Classic-kleuren laden…';
+  try{
+    const response=await fetch('https://gist.githubusercontent.com/edwinwebb/4af6edeb743156e1c89fcfb25366f9d9/raw/2389eaec3b06e01de42624b376bf596e75accc94/RalCodes.json',{cache:'force-cache'});
+    if(!response.ok)throw new Error('HTTP '+response.status);
+    const data=await response.json();
+    const full=Object.values(data).map(x=>enrichRalItem({ral:'RAL '+x.code,hex:x.hex,label:x.name,labelEn:x.name,keywords:x.code+' '+x.name+' ral '+x.code}));
+    if(full.length<200)throw new Error('incomplete palette');
+    ralDatabase.splice(0,ralDatabase.length,...full);
+    if(status)status.textContent=(currentLang==='fr'?full.length+' couleurs RAL Classic disponibles':full.length+' RAL Classic-kleuren beschikbaar');
+    renderRalEnhanced(document.getElementById('ral-kleur').value);
+  }catch(error){
+    if(status)status.textContent=currentLang==='fr'?'Palette complète indisponible, couleurs fréquentes actives.':'Volledig palet niet beschikbaar, veelgebruikte kleuren actief.';
+  }
+}
+function renderRalEnhanced(value=''){
+  renderSwatches(value);
+  const box=document.getElementById('ral-results');if(!box)return;box.innerHTML='';
+  const qv=normalizeRalText(value);if(!qv)return;
+  ralDatabase.filter(x=>normalizeRalText(x.ral+' '+x.labelEn+' '+x.labelNl+' '+x.labelFr+' '+(x.keywords||'')).includes(qv)).slice(0,40).forEach(item=>{
+    const b=document.createElement('button');b.type='button';b.className='ral-result';
+    const sw=document.createElement('span');sw.className='ral-result-swatch';sw.style.background=item.hex;
+    const tx=document.createElement('span'),strong=document.createElement('strong'),small=document.createElement('small');strong.textContent=item.ral;small.textContent=ralDisplayName(item);tx.append(strong,small);b.append(sw,tx);
+    b.onclick=()=>{document.getElementById('ral-kleur').value=item.ral+' - '+ralDisplayName(item);box.innerHTML='';updateVisual();renderSwatches('');};box.appendChild(b);
+  });
+}
+document.getElementById('ral-kleur')?.addEventListener('input',e=>renderRalEnhanced(e.target.value));
+document.getElementById('lang-toggle')?.addEventListener('change',()=>setTimeout(()=>renderRalEnhanced(document.getElementById('ral-kleur').value),0));
+function clearEverything(){
+  const message=currentLang==='fr'?'Effacer toutes les données saisies ?':'Alle ingevulde gegevens wissen?';
+  if(!window.confirm(message))return;
+  const form=q('opmeting-form');
+  form.reset();
+  form.querySelectorAll('input[type="text"],input[type="tel"],input[type="number"],input[type="date"],textarea').forEach(el=>el.value='');
+  form.querySelectorAll('input[type="checkbox"],input[type="radio"]').forEach(el=>el.checked=false);
+  form.querySelectorAll('select').forEach(el=>el.selectedIndex=0);
+  document.querySelectorAll('.field-error,.required-active').forEach(el=>el.classList.remove('field-error','required-active'));
+  const box=q('validation-box');if(box){box.innerHTML='';box.classList.remove('show');}
+  const door=q('deurtype');if(door)door.dispatchEvent(new Event('change',{bubbles:true}));
+  ui();sec();
+  try{updateVisual();}catch(error){console.error('Visual reset:',error);}
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+q('btn-clear-all').addEventListener('click',clearEverything);
+window.addEventListener('load',()=>{ui();sec();loadFullRalPalette()})})();</script><script>
+(()=>{'use strict';
+const q=id=>document.getElementById(id), FORM=q('opmeting-form'), DB='opmeting-mesure-dossiers-v4', ACTIVE='opmeting-mesure-active-v4';
+const labels={nl:{title:'Mijn dossiers',search:'Zoek dossier of werf',new:'Nieuw dossier',open:'Open',copy:'Dupliceer',del:'Verwijder',empty:'Geen dossiers',confirm:'Dit dossier verwijderen?'},fr:{title:'Mes dossiers',search:'Rechercher dossier ou chantier',new:'Nouveau dossier',open:'Ouvrir',copy:'Dupliquer',del:'Supprimer',empty:'Aucun dossier',confirm:'Supprimer ce dossier ?'}};
+const L=()=>labels[currentLang]||labels.nl, uid=()=>crypto.randomUUID?crypto.randomUUID():'d-'+Date.now()+'-'+Math.random().toString(16).slice(2);
+const db=()=>{try{return JSON.parse(localStorage.getItem(DB))||{items:{}}}catch{return{items:{}}}},put=x=>localStorage.setItem(DB,JSON.stringify(x));
+function state(){let fields={};FORM.querySelectorAll('input,select,textarea').forEach((el,i)=>{let id=el.id||el.name||'field-'+i;fields[id]=el.type==='checkbox'?el.checked:el.value});return{app:'Opmeting Mesure',version:4,language:currentLang,fields}}
+function apply(st){if(!st?.fields)throw Error(currentLang==='fr'?'Fichier JSON non valide.':'Ongeldig JSON-bestand.');Object.entries(st.fields).forEach(([id,v])=>{let el=q(id);if(!el)return;el.type==='checkbox'?el.checked=!!v:el.value=v??''});if(st.language==='fr'&&currentLang!=='fr'){q('lang-toggle').checked=true;toggleLanguage()}q('deurtype')?.dispatchEvent(new Event('change',{bubbles:true}));ui();sec();try{updateVisual()}catch{} }
+function active(){let d=db(),id=localStorage.getItem(ACTIVE);if(!id||!d.items[id]){id=uid();d.items[id]={id,created:new Date().toISOString(),updated:new Date().toISOString(),state:state()};put(d);localStorage.setItem(ACTIVE,id)}return id}
+let timer;function save(){let d=db(),id=active(),old=d.items[id]||{};d.items[id]={...old,id,created:old.created||new Date().toISOString(),updated:new Date().toISOString(),state:state()};put(d);renderDossiers()}function schedule(){clearTimeout(timer);timer=setTimeout(save,250)}
+function renderDossiers(){let list=q('dossier-list');if(!list)return;let d=db(),query=(q('dos-search').value||'').toLowerCase(),items=Object.values(d.items).filter(x=>JSON.stringify(x.state.fields).toLowerCase().includes(query)).sort((a,b)=>b.updated.localeCompare(a.updated));list.innerHTML='';q('dos-title').textContent=L().title;q('dos-search').placeholder=L().search;q('dos-new').textContent=L().new;if(!items.length){list.textContent=L().empty;return}items.forEach(it=>{let row=document.createElement('div');row.className='dossier-item'+(it.id===localStorage.getItem(ACTIVE)?' active':'');let info=document.createElement('div');info.innerHTML='<strong></strong><small></small>';info.querySelector('strong').textContent=it.state.fields.dossiernummer||it.state.fields.werf||'—';info.querySelector('small').textContent=[it.state.fields.werf,it.state.fields['datum-opmeting']].filter(Boolean).join(' • ');let a=document.createElement('div');a.className='dossier-actions';[[L().open,()=>openDos(it.id)],[L().copy,()=>copyDos(it.id)],[L().del,()=>delDos(it.id)]].forEach(([t,f])=>{let b=document.createElement('button');b.type='button';b.textContent=t;b.onclick=f;a.append(b)});row.append(info,a);list.append(row)})}
+function openDos(id){save();let it=db().items[id];if(it){localStorage.setItem(ACTIVE,id);apply(it.state);q('dossier-dialog').close()}}function copyDos(id){let d=db(),n=uid(),st=structuredClone?structuredClone(d.items[id].state):JSON.parse(JSON.stringify(d.items[id].state));st.fields.dossiernummer=(st.fields.dossiernummer||'')+' kopie';d.items[n]={id:n,created:new Date().toISOString(),updated:new Date().toISOString(),state:st};put(d);localStorage.setItem(ACTIVE,n);apply(st);renderDossiers()}function delDos(id){if(!confirm(L().confirm))return;let d=db();delete d.items[id];put(d);if(localStorage.getItem(ACTIVE)===id)localStorage.removeItem(ACTIVE);active();renderDossiers()}
+q('btn-dossiers').onclick=()=>{renderDossiers();q('dossier-dialog').showModal()};q('dos-close').onclick=()=>q('dossier-dialog').close();q('dos-search').oninput=renderDossiers;q('dos-new').onclick=()=>{save();let id=uid(),d=db();FORM.reset();d.items[id]={id,created:new Date().toISOString(),updated:new Date().toISOString(),state:state()};put(d);localStorage.setItem(ACTIVE,id);apply(d.items[id].state);q('dossier-dialog').close()};
+q('btn-export-json').onclick=()=>{if(!validateMeasurements(true))return;save();let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(state(),null,2)],{type:'application/json'}));a.download='opmeting-'+(q('dossiernummer').value||'dossier')+'.json';a.click()};q('btn-import-json').onclick=()=>q('json-file-input').click();q('json-file-input').onchange=async e=>{try{let st=JSON.parse(await e.target.files[0].text()),id=uid(),d=db();if(!st.fields)throw Error();d.items[id]={id,created:new Date().toISOString(),updated:new Date().toISOString(),state:st};put(d);localStorage.setItem(ACTIVE,id);apply(st);save();alert(currentLang==='fr'?'Importation réussie.':'Import geslaagd.')}catch{alert(currentLang==='fr'?'Importation échouée.':'Import mislukt.')}e.target.value=''};
+function printMeta(){q('print-meta').textContent=[q('dossiernummer').value,q('werf').value,q('datum-opmeting').value,q('technieker').value].filter(Boolean).join(' • ');q('print-footer-dossier').textContent=q('dossiernummer').value||''}let oldPrint=window.validatedPrint;window.validatedPrint=()=>{if(validateMeasurements(true)){save();printMeta();window.print()}};window.addEventListener('beforeprint',printMeta);
+function updateAntipaniekLength(){
+  const output=q('antipaniek-raillengte'), selected=q('vloergeleider')?.value==='Antipaniek';
+  if(!output)return;
+  if(!selected){output.hidden=true;output.textContent='';return;}
+  const leafLeft=Number(q('dim-spl-b')?.value||0), opening=q('openingswijze')?.value||'';
+  const count=opening.includes('Dubbel')?2:1;
+  output.hidden=false;
+  if(leafLeft>0){
+    const railLength=leafLeft+100;
+    output.textContent=`${count} × ${railLength} mm`;
+    output.title=(currentLang==='fr'?'Longueur du vantail gauche + 100 mm':'Lengte deurvleugel links + 100 mm');
+  }else{
+    output.textContent=currentLang==='fr'?`${count} × — mm (largeur gauche requise)`: `${count} × — mm (linker vleugelbreedte vereist)`;
+  }
+}
+['vloergeleider','openingswijze','dim-spl-b'].forEach(id=>q(id)?.addEventListener(id==='dim-spl-b'?'input':'change',updateAntipaniekLength));
+q('lang-toggle')?.addEventListener('change',()=>setTimeout(updateAntipaniekLength,0));
+function guide(){let v=q('vloergeleider')?.value||'',swing=q('deurtype')?.value==='Draaideur',open=q('openingswijze')?.value||'',dbl=open.includes('Dubbel'),left=open.includes('Links');['guide-small-u','guide-small-l','guide-full','guide-ap-l','guide-ap-r'].forEach(id=>q(id)&&(q(id).style.opacity='0'));if(swing)return;if(v==='U-Model'||v==='L-Model'){let g=q(v==='U-Model'?'guide-small-u':'guide-small-l');g.style.opacity='1';if(!dbl&&!left)g.setAttribute('transform','translate(530 0) scale(-1 1)')}if(v==='Omega-rail'||v==='U-profiel'){q('guide-full').style.opacity='1';q('guide-full-rect').setAttribute('fill',v==='Omega-rail'?'#6366f1':'#f59e0b');q('guide-full-text').textContent=v.toUpperCase()}if(v==='Antipaniek'){let add=(g,r,p)=>{let panel=q(p),x=+panel.getAttribute('x'),w=+panel.getAttribute('width');if(w>0){q(g).style.opacity='1';q(r).setAttribute('x',x);q(r).setAttribute('width',w)}};if(dbl||left)add('guide-ap-l','guide-ap-l-rect','rect-vpl');if(dbl||!left)add('guide-ap-r','guide-ap-r-rect','rect-vpr')}}q('vloergeleider')?.addEventListener('change',()=>setTimeout(()=>{guide();updateAntipaniekLength();},0));
+FORM.addEventListener('input',schedule);FORM.addEventListener('change',schedule);window.addEventListener('load',()=>{let id=active(),it=db().items[id];if(it)apply(it.state);guide();updateAntipaniekLength();renderDossiers()});
+})();</script><div class="print-footer">Opmeting Mesure • <span id="print-footer-dossier"></span></div></body>
+</html>
